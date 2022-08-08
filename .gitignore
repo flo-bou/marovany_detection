@@ -1,0 +1,13 @@
+
+*.png
+*.jpg
+*.ipynb
+*.mid
+*.wav
+*.txt
+
+
+__pycache__/
+.idea/
+.ipynb_checkpoints/
+capteurs/

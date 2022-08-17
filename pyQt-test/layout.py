@@ -3,6 +3,7 @@ import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QTabWidget
 from PyQt6.QtGui import QPalette, QColor, QAction
 
+
 class MainWindow(QMainWindow):
 
     def __init__(self):

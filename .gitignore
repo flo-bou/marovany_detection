@@ -5,7 +5,7 @@
 *.mid
 *.wav
 *.txt
-
+poetry.lock
 
 __pycache__/
 .idea/

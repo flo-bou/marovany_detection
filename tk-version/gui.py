@@ -31,17 +31,17 @@ class Gui:
         self.main_canvas.grid(row=0, column=0)
         
         scroller.config(command=self.main_canvas.yview)
-        # scroller.bind(
-        #     "<Configure>",
-        #     lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all"))
-        # )
 
         self.content_wrapper = tk.Frame(master=self.main_canvas, bg=self.color_vlight)
         self.main_canvas.create_window(0, 0,
                                         width=(self.window_width - scroller.winfo_width()), height=self.window_height,
                                         anchor='nw',
                                         window=self.content_wrapper)
-
+        self.content_wrapper.bind(
+            "<Configure>",
+            lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all"))
+        )
+        
         self.default_label = self.create_default_label(self.content_wrapper)
 
         print("gui created")
@@ -66,6 +66,7 @@ class Gui:
         ------ 
         Null
         """
+        # TODO change self.content_wrapper dimension to fit the itmes size
         
         self.default_label.destroy()
 
@@ -92,4 +93,13 @@ class Gui:
             line = tk.Label(master=container, justify='center', 
                             bg=self.color_light,
                             text="________________________________________________________________________________")
+            # line = ttk.Separator(master=container, orient='horizontal')
             line.grid(row=2, column=0, columnspan=2)
+        
+        # self.main_canvas.config(height=container.winfo_height()*nb)
+        self.content_wrapper.config(height=container.winfo_height()*3)
+        
+        print("container height :", container.winfo_height())
+        print("wrapper height :", self.content_wrapper.winfo_height())
+        print("main_canvas height :", self.main_canvas.winfo_height())
+

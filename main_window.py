@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        
+        self.get_app_size()
         self.v_box = QVBoxLayout()
         analysis_1 = AnalysisWidget("ex1-int.jpg")
         # analysis_2 = AnalysisWidget("ex1-spec.jpg")
@@ -39,7 +39,9 @@ class MainWindow(QMainWindow):
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         # self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.main_container)
-        self.scroll_area.setFixedSize(1700, 700)
+        width = int(self.screen_available_Vsize.width() * 0.8)
+        height = int(self.screen_available_Vsize.height() * 0.8)
+        self.scroll_area.setFixedSize(width, height)
         print("scroll_area size:", str(self.scroll_area.size()))
         
         self.create_menu()
@@ -47,11 +49,23 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.scroll_area)
         # self.setGeometry(100, 100, 1200, 800)
         self.adjustSize()
+        self.get_app_size()
+        # print("devicePixelRatio", self.devicePixelRatio())
         self.setWindowTitle('Scroll Area Demo')
         # print("main_window size:", str(self.size()))
         # print("main_window geometry:", str(self.geometry()))
     
     
+    def get_app_size(self):
+        screen = self.screen()
+        self.device_pixel_ratio = screen.devicePixelRatio()
+        print("device_pixel_ratio", self.device_pixel_ratio)
+        # screen_available_size = screen.availableSize()
+        # print("screen_available_size", screen_available_size)
+        self.screen_available_Vsize = screen.availableVirtualSize()
+        print("screen_available_Vsize", self.screen_available_Vsize)
+
+
     def create_menu(self):
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu("File")
@@ -108,6 +122,7 @@ class MainWindow(QMainWindow):
 
 
 class MainContainer(QWidget):
+
 
     def __init__(self):
         super().__init__()

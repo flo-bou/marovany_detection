@@ -9,6 +9,7 @@ class AnalysisWidget(QWidget):
     
     def __init__(self, path):
         super().__init__()
+        # print("devicePixelRatio", self.devicePixelRatio())
         
         self.left_box = QVBoxLayout()
         # self.left_box.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)

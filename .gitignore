@@ -1,13 +1,18 @@
 
 *.png
 *.jpg
-*.ipynb
+# *.ipynb
 *.mid
 *.wav
 *.txt
-poetry.lock
+# poetry.lock
 
 __pycache__/
 .idea/
 .ipynb_checkpoints/
+
 capteurs/
+
+# old version
+pyQt_test/
+tk_version/

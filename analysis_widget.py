@@ -4,7 +4,6 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
 
 
-
 class AnalysisWidget(QWidget):
     
     def __init__(self, path):

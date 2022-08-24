@@ -22,6 +22,7 @@ def estimate_note_pitch(y, onset_frames):
         1 (np.ndarray): time series of fundamental frequencies in Hertz
         2 (np.ndarray): array of times (in seconds)
     """
+    
     f0, voiced_flag, voiced_probs = librosa.pyin(y, fmin=librosa.note_to_hz('C1'),
                                                 fmax=librosa.note_to_hz('C7'))
     times = librosa.times_like(f0)
@@ -46,7 +47,7 @@ def onset_detection(y, sr, delta=0.5):
                                                 delta=delta, normalize=True)
     return onset_frames, times, o_env
 
-def plot_onsets_and_pitch_detection(figsize, times, f0, o_env, onset_frames):
+def plot_onsets_and_pitch_detection(figsize, times, f0, o_env, onset_frames, y):
     """_summary_
 
     Args:
@@ -68,7 +69,7 @@ def plot_onsets_and_pitch_detection(figsize, times, f0, o_env, onset_frames):
     
     ax[1].plot(times, o_env, label='Onset strength')
     ax[1].vlines(times[onset_frames], 0, o_env.max(), color='r', 
-                    alpha=0.9, linestyle='--', label='Onsets')
+                alpha=0.9, linestyle='--', label='Onsets')
     ax[1].legend()
     plt.show()
 

@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import (QWidget, QLabel, QLayout, QVBoxLayout, QHBoxLayout,
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
 
+from plot_widget import PlotWidget
 
 class AnalysisWidget(QWidget):
     
@@ -10,19 +11,20 @@ class AnalysisWidget(QWidget):
         super().__init__()
         # print("devicePixelRatio", self.devicePixelRatio())
         
-        self.left_box = QVBoxLayout()
-        # self.left_box.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
-        self.left_box.addWidget(QLabel("Very long text indeed."))
-        self.left_box.addWidget(self.create_img_label(path))
+        self.button_box = QVBoxLayout()
+        self.button_box.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.button_box.addWidget(QPushButton("Hi !"))
+        self.button_box.addWidget(QPushButton("Hi too !"))
         
-        self.right_box = QVBoxLayout()
-        self.right_box.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.right_box.addWidget(QPushButton("Hi !"))
-        self.right_box.addWidget(QPushButton("Hi too !"))
+        self.plot_box = QVBoxLayout()
+        # self.left_box.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
+        self.plot_box.addWidget(QLabel("Very long text indeed."))
+        # self.left_box.addWidget(self.create_img_label(path))
+        self.plot_box.addWidget(PlotWidget())
         
         self.main_box = QHBoxLayout()
-        self.main_box.addLayout(self.left_box)
-        self.main_box.addLayout(self.right_box)
+        self.main_box.addLayout(self.button_box)
+        self.main_box.addLayout(self.plot_box)
 
         size_policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         size_policy.setHorizontalStretch(0)
@@ -35,9 +37,9 @@ class AnalysisWidget(QWidget):
         # print(id(self), "right_box sizehint:", str(self.right_box.sizeHint()))
         # print(id(self), "right_box geometry:", str(self.right_box.geometry()))
         print(id(self), "AnalysisWidget size:", str(self.size()))
-        print(id(self), "AnalysisWidget sizePolicy:", self.sizePolicy().horizontalStretch(), self.sizePolicy().verticalStretch())
+        # print(id(self), "AnalysisWidget sizePolicy:", self.sizePolicy().horizontalStretch(), self.sizePolicy().verticalStretch())
 
-        
+    
     def create_img_label(self, path):
         img = QPixmap()
         if not img.load(path):

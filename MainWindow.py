@@ -1,11 +1,11 @@
 from os import scandir, listdir
-from os.path import split, isfile
+# from os.path import split, isfile
 
-from PyQt6.QtWidgets import (QWidget, QLabel, QScrollArea, QMenu, QSizePolicy, QBoxLayout,
-                             QVBoxLayout, QMainWindow, QFileDialog)
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtWidgets import QScrollArea, QVBoxLayout, QMainWindow, QFileDialog
+from PyQt6.QtCore import Qt
 
-from analysis_widget import AnalysisWidget
+from AnalysisWidget import AnalysisWidget
+from MainContainer import MainContainer
 
 
 class MainWindow(QMainWindow):
@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.get_screen_size()
+        
         self.v_box = QVBoxLayout()
         analysis_1 = AnalysisWidget("ex1-int.jpg")
         # analysis_2 = AnalysisWidget("ex1-spec.jpg")
@@ -26,10 +27,11 @@ class MainWindow(QMainWindow):
 
         self.main_container = MainContainer()
         self.main_container.setLayout(self.v_box)
+        print(id(self.main_container), "main_container sizeHint:", str(self.main_container.sizeHint()))
         self.main_container.adjustSize()
-        self.main_container.update()
-        print("v_box geometry:", str(self.v_box.geometry()))
-        print("main_container size:", str(self.main_container.size()))
+        print(id(self.main_container), "main_container size:", str(self.main_container.size()))
+        # self.main_container.update()
+        # print("v_box geometry:", str(self.v_box.geometry()))
 
         # scroll_area is the centralWidget
         # scroll_area contains the main_container
@@ -48,7 +50,6 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.scroll_area)
         # self.setGeometry(100, 100, 1200, 800)
         self.adjustSize()
-        self.get_screen_size()
         # print("devicePixelRatio", self.devicePixelRatio())
         self.setWindowTitle('Scroll Area Demo')
         # print("main_window size:", str(self.size()))
@@ -100,23 +101,3 @@ class MainWindow(QMainWindow):
         for child in l:
             print(id(child), type(child).__name__, "main_container child geometry:", str(child.geometry()))
         print("main_container:", str(self.main_container.size()))
-
-
-class MainContainer(QWidget):
-
-    def __init__(self):
-        super().__init__()
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-    
-    
-    def sizeHint(self):
-        width = self.width()
-        height = 0
-        for child in self.children():
-            # print(id(child), str(type(child).__name__) , "main_container child geometry:", str(child.geometry()))
-            if not isinstance(child, QBoxLayout):
-                if child.width() > width:
-                    width = child.width()
-                height = height + child.height()
-        print(id(child), "main_container sizehint:", width, height)
-        return QSize(width, height)

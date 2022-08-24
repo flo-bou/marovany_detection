@@ -1,4 +1,4 @@
-import matplotlib as mpl
+# import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -6,6 +6,7 @@ import numpy as np
 def test1():
     fig, ax = plt.subplots()  # Create a figure containing a single axes.
     ax.plot([1, 2, 3, 4], [1, 4, 2, 3]);  # Plot some data on the axes.
+    plt.show()
 
 def test2():
     x = np.linspace(0, 2, 100)  # Sample data.
@@ -18,6 +19,7 @@ def test2():
     ax.set_ylabel('y label')  # Add a y-label to the axes.
     ax.set_title("Simple Plot")  # Add a title to the axes.
     ax.legend("My legend");  # Add a legend.
+    plt.show()
 
 def test3():
     x = np.linspace(0, 2 * np.pi, 200)
@@ -27,4 +29,12 @@ def test3():
     ax.plot(x, y)
     plt.show()
 
-test2()
+def test4():
+    x = np.linspace(0, 2 * np.pi, 200)
+    y = np.sin(x)
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    plt.show()
+
+test1()

@@ -1,9 +1,8 @@
-from PyQt6.QtWidgets import (QWidget, QLabel, QLayout, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy)
-# from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtWidgets import (QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy)
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtCore import Qt
 
-from plot_widget import PlotWidget
+from PlotWidget import PlotWidget
 
 class AnalysisWidget(QWidget):
     
@@ -25,14 +24,11 @@ class AnalysisWidget(QWidget):
         self.main_box = QHBoxLayout()
         self.main_box.addLayout(self.button_box)
         self.main_box.addLayout(self.plot_box)
-        print(id(self), "main_box geometry:", str(self.main_box.geometry()))
+        # print(id(self), "main_box geometry:", str(self.main_box.geometry()))
 
-        size_policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        size_policy.setHorizontalStretch(0)
-        size_policy.setVerticalStretch(0)
-        self.setSizePolicy(size_policy)
+        self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
         self.setLayout(self.main_box)
-        print(id(self), "AnalysisWidget size:", str(self.size()))
+        # print(id(self), "AnalysisWidget size:", str(self.size()))
         print(id(self), "AnalysisWidget sizeHint:", str(self.sizeHint()))
         self.adjustSize()
         # print(id(self), "left_box sizehint:", str(self.left_box.sizeHint()))
@@ -59,8 +55,8 @@ class AnalysisWidget(QWidget):
         print(id(self), "img_label size:", str(img_label.size()))
         return img_label
     
-    def sizeHint(self):
-        # size is fixed
-        width = 1200
-        height = 400
-        return QSize(width, height)
+    # def sizeHint(self):
+    #     # size is fixed
+    #     width = 1400
+    #     height = 400
+    #     return QSize(width, height)

@@ -6,7 +6,6 @@ from matplotlib.backends.backend_qtagg import FigureCanvas, FigureCanvasQTAgg, N
 import matplotlib.figure as fig
 # import matplotlib.pyplot as plt
 
-# main window
 class PlotWidget(QWidget):
 
     def __init__(self):
@@ -14,7 +13,7 @@ class PlotWidget(QWidget):
         
         # self.figure = plt.figure() # a figure instance to plot on
         self.figure = fig.Figure()
-        self.figure.set(figwidth=10, figheight=3)
+        self.figure.set(figwidth=16, figheight=4) # 10 = 1000px
         # self.figure.
         print(id(self.figure), "figure", self.figure)
         # print(id(self.figure2), "figure2", self.figure)
@@ -34,17 +33,19 @@ class PlotWidget(QWidget):
         layout.addWidget(self.nav_toolbar)
         layout.addWidget(self.button)
 
-        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        # self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
         self.setLayout(layout)
         # print(id(self), "plot widget size:", str(self.size()))
         print(id(self), "plot widget sizeHint:", str(self.sizeHint()))
-        self.adjustSize()
+        # self.adjustSize() # default size max is 1280px
+        self.setFixedSize(self.sizeHint())
         # self.update()
         print(id(self), "plot widget size:", str(self.size()))
 
     # action called by the push button
     def plot(self):
-        data = [random.random() for i in range(100)] # random data
+        data = [random.random() for i in range(20)] # random data
         self.figure.clear() # clearing old figure
         ax = self.figure.add_subplot(111)
         ax.plot(data, '*-')

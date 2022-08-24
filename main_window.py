@@ -104,10 +104,9 @@ class MainWindow(QMainWindow):
 
 class MainContainer(QWidget):
 
-
     def __init__(self):
         super().__init__()
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
     
     
     def sizeHint(self):

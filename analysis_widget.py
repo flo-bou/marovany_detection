@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (QWidget, QLabel, QLayout, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy)
 # from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
 
 from plot_widget import PlotWidget
 
@@ -21,16 +21,19 @@ class AnalysisWidget(QWidget):
         self.plot_box.addWidget(QLabel("Very long text indeed."))
         # self.left_box.addWidget(self.create_img_label(path))
         self.plot_box.addWidget(PlotWidget())
-        
+
         self.main_box = QHBoxLayout()
         self.main_box.addLayout(self.button_box)
         self.main_box.addLayout(self.plot_box)
+        print(id(self), "main_box geometry:", str(self.main_box.geometry()))
 
         size_policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         size_policy.setHorizontalStretch(0)
         size_policy.setVerticalStretch(0)
         self.setSizePolicy(size_policy)
         self.setLayout(self.main_box)
+        print(id(self), "AnalysisWidget size:", str(self.size()))
+        print(id(self), "AnalysisWidget sizeHint:", str(self.sizeHint()))
         self.adjustSize()
         # print(id(self), "left_box sizehint:", str(self.left_box.sizeHint()))
         # print(id(self), "left_box geometry:", str(self.left_box.geometry()))
@@ -47,7 +50,7 @@ class AnalysisWidget(QWidget):
         print(id(self), "img size:", str(img.size()))
         img_label = QLabel()
         # print(id(self), "img_label sizeHint:", str(img_label.sizeHint()))
-        img_label.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred))
+        img_label.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         # print("label sizeHint:", str(img_label.sizeHint()))
         img_label.setPixmap(img)
         print(id(self), "img_label sizeHint:", str(img_label.sizeHint()))
@@ -57,4 +60,7 @@ class AnalysisWidget(QWidget):
         return img_label
     
     def sizeHint(self):
-        return self.size()
+        # size is fixed
+        width = 1200
+        height = 400
+        return QSize(width, height)

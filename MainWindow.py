@@ -4,7 +4,7 @@ from os import scandir, listdir
 from PyQt6.QtWidgets import QScrollArea, QVBoxLayout, QMainWindow, QFileDialog
 from PyQt6.QtCore import Qt
 
-from AnalysisWidget import AnalysisWidget
+from FileAnalysisWidget import FileAnalysisWidget
 from MainContainer import MainContainer
 
 
@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         self.get_screen_size()
         
         self.v_box = QVBoxLayout()
-        analysis_1 = AnalysisWidget("ex1-int.jpg")
+        analysis_1 = FileAnalysisWidget("ex1-int.jpg")
         # analysis_2 = AnalysisWidget("ex1-spec.jpg")
         self.v_box.addWidget(analysis_1, 0)
         # self.v_box.addStretch()
@@ -89,7 +89,7 @@ class MainWindow(QMainWindow):
     
     
     def add_analysis_widget(self):
-        a = AnalysisWidget("ex1-spec.jpg")
+        a = FileAnalysisWidget("ex1-spec.jpg")
         print("AnalysisWidget sizeHint:", str(a.sizeHint()))
         self.v_box.addStretch()
         self.v_box.addWidget(a, 0)

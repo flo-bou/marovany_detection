@@ -6,14 +6,26 @@ from matplotlib.backends.backend_qtagg import FigureCanvas, FigureCanvasQTAgg, N
 import matplotlib.figure as fig
 # import matplotlib.pyplot as plt
 
-class PlotWidget(QWidget):
+class FigureWidget(QWidget):
+    """Generic figure widget. Made for several figure types.
 
-    def __init__(self):
+    Args:
+        QWidget (QWidget): Qt all-around widget
+    """
+    # (figwidth=16, figheight=4)
+    def __init__(self, figure: fig.Figure):
+        """_summary_
+
+        Args:
+            fig_size (list[w, h]): size of the figure in mpl usuals units (it will be 100 times more in Qt pixels)
+        """
         super().__init__()
         
+        # self.fig_size = [28, 14]
+        fig_size = [12, 3]
         # self.figure = plt.figure() # a figure instance to plot on
-        self.figure = fig.Figure()
-        self.figure.set(figwidth=16, figheight=4) # 10 = 1000px
+        self.figure = figure
+        self.figure.set(figwidth=fig_size[0], figheight=fig_size[1]) # 10 = 1000px
         # self.figure.
         print(id(self.figure), "figure", self.figure)
         # print(id(self.figure2), "figure2", self.figure)
@@ -25,13 +37,13 @@ class PlotWidget(QWidget):
         self.nav_toolbar = NavigationToolbar2QT(self.canvas, self)
         print(id(self), "nav_toolbar sizeHint:", str(self.nav_toolbar.sizeHint()))
         print(id(self), "nav_toolbar size:", str(self.nav_toolbar.size()))
-        self.button = QPushButton('Plot')
-        self.button.clicked.connect(self.plot)
+        # self.button = QPushButton('Plot')
+        # self.button.clicked.connect(self.plot)
 
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
         layout.addWidget(self.nav_toolbar)
-        layout.addWidget(self.button)
+        # layout.addWidget(self.button)
 
         # self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)

@@ -146,3 +146,23 @@ def plotting():
 
     multitrack = read("marovany.mid")
     multitrack.plot()
+    
+def onset_detection(y,sr,delta=0.5):
+
+    o_env = librosa.onset.onset_strength(y=y, sr=sr)
+    times = librosa.times_like(o_env, sr=sr)
+    onset_frames = librosa.onset.onset_detect(onset_envelope=o_env, sr=sr, delta=delta, normalize=True)
+
+    return onset_frames, times,o_env
+
+def estimate_note_pitch(y,onset_frames):
+
+    f0, voiced_flag, voiced_probs = librosa.pyin(y, fmin=librosa.note_to_hz('C1'),
+                                                fmax=librosa.note_to_hz('C7'))
+    times = librosa.times_like(f0)
+    list_f0 = []
+    for ll in onset_frames:
+        list_f0.append(list(f0[ ll - 5 : ll+5]))
+
+    single_f0_estimation = np.nanmedian(np.concatenate(list_f0, axis=0 ))
+    return single_f0_estimation,f0,times

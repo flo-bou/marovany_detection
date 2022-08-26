@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import (QWidget, QSizePolicy, QBoxLayout, QVBoxLayout)
+from PyQt6.QtWidgets import (QWidget, QSizePolicy, QBoxLayout, QVBoxLayout, QLabel)
 from PyQt6.QtCore import QSize
 import pretty_midi
 
@@ -9,20 +9,12 @@ class MainContainer(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.dir_path = "C:/Users/admin/Project/MIDIconversion_marovany/capteurs/"
+        self.dir_path = ""
+        # self.dir_path = "C:/Users/admin/Project/MIDIconversion_marovany/capteurs/"
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.v_box = QVBoxLayout()
         # add default widget (no Analysis)
-        analysis_1 = FileAnalysisWidget(fpath=self.dir_path + "05-G5-140709_1628.wav")
-        # analysis_2 = AnalysisWidget("ex1-spec.jpg")
-        self.v_box.addWidget(analysis_1, 0)
-        # self.v_box.addStretch()
-        # size_policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        # size_policy.setHorizontalStretch(0)
-        # size_policy.setVerticalStretch(0)
-        # self.v_box.setSizePolicy(size_policy)
-        # self.v_box.update()
-
+        self.add_welcoming_widget()
         self.setLayout(self.v_box)
         print(id(self), "main_container sizeHint:", str(self.sizeHint()))
         self.adjustSize()
@@ -35,7 +27,7 @@ class MainContainer(QWidget):
         width = self.width()
         height = 0
         for child in self.children():
-            # print(id(child), str(type(child).__name__) , "main_container child geometry:", str(child.geometry()))
+            print(id(child), str(type(child).__name__) , "main_container child geometry:", str(child.geometry()))
             if not isinstance(child, QBoxLayout):
                 if child.width() > width:
                     width = child.width()
@@ -44,19 +36,30 @@ class MainContainer(QWidget):
         return QSize(width, height)
     
     
-    def add_file_analysis_widget(self):
-        # add path as entry
-        a = FileAnalysisWidget(self.dir_path)
-        print("AnalysisWidget sizeHint:", str(a.sizeHint()))
+    def add_welcoming_widget(self):
+        self.welcoming_widget = QLabel("Use « File » > « Import directory » to start the analysis.")
+        self.welcoming_widget.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
+        self.v_box.addWidget(self.welcoming_widget)
+
+    def add_multiple_analysis_widget(self, file_paths: list):
+        del self.welcoming_widget # TODO
+        for file_path in file_paths:
+            self.add_single_analysis_widget(fpath=file_path)
+        self.adjustSize()
+        self.update()
+    
+    def add_single_analysis_widget(self, fpath: str):
+        analysis_widget = FileAnalysisWidget(fpath=fpath)
+        print("AnalysisWidget sizeHint:", str(analysis_widget.sizeHint()))
         self.v_box.addStretch()
-        self.v_box.addWidget(a, 0)
+        self.v_box.addWidget(analysis_widget, 0)
         # self.v_box.update()
         print("main_container sizeHint:", str(self.sizeHint()))
         self.adjustSize()
         # self.main_container.update()
-        l = self.children()
-        for child in l:
-            print(id(child), type(child).__name__, "main_container child geometry:", str(child.geometry()))
+        # children = self.children()
+        # for child in children:
+        #     print(id(child), type(child).__name__, "main_container child geometry:", str(child.geometry()))
         print("main_container:", str(self.size()))
     
     

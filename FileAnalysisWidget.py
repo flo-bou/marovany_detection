@@ -1,7 +1,7 @@
-from PyQt6.QtWidgets import (QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy)
+from PyQt6.QtWidgets import (QWidget, QLabel, QVBoxLayout, QHBoxLayout, 
+                             QPushButton, QSizePolicy)
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
-import pretty_midi
 
 from FigureWidget import FigureWidget
 from analysis import *
@@ -10,17 +10,11 @@ class FileAnalysisWidget(QWidget):
     """Widget containing analysis of wav files, its figures and buttons to run them
     """
     
-    banjo_MIDI = pretty_midi.PrettyMIDI()
-    # Create an Instrument instance for a banjo instrument
-    banjo_program = pretty_midi.instrument_name_to_program('Banjo')
-    banjo_instru = pretty_midi.Instrument(program=banjo_program)
-    # Add the banjo instrument to the PrettyMIDI object
-    banjo_MIDI.instruments.append(banjo_instru)
-    
-    def __init__(self, path):
+    def __init__(self, fpath: str):
         super().__init__()
+        self.file_path = fpath
         self.init_var()
-        self.analyse()
+        self.generate_analysis()
         # print("devicePixelRatio", self.devicePixelRatio())
 
         self.button_box = QVBoxLayout()
@@ -32,7 +26,12 @@ class FileAnalysisWidget(QWidget):
         # self.left_box.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
         self.plot_box.addWidget(QLabel("Very long text indeed."))
         # self.left_box.addWidget(self.create_img_label(path))
-        self.plot_box.addWidget(FigureWidget(figure=get_time_series_fig(fig_size=self.fig_size, y=self.y, samp_rate=self.sr)))
+        self.plot_box.addWidget(FigureWidget(
+            figure=get_time_series_fig(y=self.y, samp_rate=self.sr))
+        )
+        # self.plot_box.addWidget(FigureWidget(
+        #     figure=get_pitch_detection_fig(fig_size=self.fig_size, ampl_envel=self.amplitude_envelope, threshold=self.threshold,min_duration=self.min_duration, instru=, decal=self.decal, midi_note=, sample_rate=self.sr))
+        # )
 
         self.main_box = QHBoxLayout()
         self.main_box.addLayout(self.button_box)
@@ -97,12 +96,11 @@ class FileAnalysisWidget(QWidget):
         # self.wav_list = glob.glob('capteurs/*wav')
         # Create a PrettyMIDI object
         
-    def analyse(self):
+    def generate_analysis(self):
         # if verbose:
         #     print('\n Now processing file', wav_file)
         # audio data loading
-        self.y, self.sr = librosa.load(wav_file, offset=0, duration=self.duration_for_analysis)
+        print("Hi before load")
+        self.y, self.sr = librosa.load(self.file_path, offset=0, duration=self.duration_for_analysis)
         self.amplitude_envelope = get_amplitude_envelope(y=self.y, filter_timescale=self.filter_timescale)
-        self.decal = get_decal(self.amplitude_envelope, self.threshold)
-        self.midi_note = get_note_guessed_from_fname(note_list=self.note_list, fname=wav_file)
-        print("Guessed note :", midi_note)
+        self.decal = get_decal(y=self.y ,amplitude_envelope=self.amplitude_envelope, threshold=self.threshold)

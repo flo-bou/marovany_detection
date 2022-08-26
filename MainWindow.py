@@ -4,7 +4,6 @@ from os import scandir, listdir
 from PyQt6.QtWidgets import QScrollArea, QVBoxLayout, QMainWindow, QFileDialog
 from PyQt6.QtCore import Qt
 
-from FileAnalysisWidget import FileAnalysisWidget
 from MainContainer import MainContainer
 
 
@@ -14,25 +13,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.get_screen_size()
         
-        self.v_box = QVBoxLayout()
-        analysis_1 = FileAnalysisWidget("ex1-int.jpg")
-        # analysis_2 = AnalysisWidget("ex1-spec.jpg")
-        self.v_box.addWidget(analysis_1, 0)
-        # self.v_box.addStretch()
-        # size_policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        # size_policy.setHorizontalStretch(0)
-        # size_policy.setVerticalStretch(0)
-        # self.v_box.setSizePolicy(size_policy)
-        self.v_box.update()
-
         self.main_container = MainContainer()
-        self.main_container.setLayout(self.v_box)
-        print(id(self.main_container), "main_container sizeHint:", str(self.main_container.sizeHint()))
-        self.main_container.adjustSize()
-        print(id(self.main_container), "main_container size:", str(self.main_container.size()))
-        # self.main_container.update()
-        # print("v_box geometry:", str(self.v_box.geometry()))
-
         # scroll_area is the centralWidget
         # scroll_area contains the main_container
         self.scroll_area = QScrollArea()
@@ -46,7 +27,7 @@ class MainWindow(QMainWindow):
         print("scroll_area size:", str(self.scroll_area.size()))
         
         self.create_menu()
-
+        
         self.setCentralWidget(self.scroll_area)
         # self.setGeometry(100, 100, 1200, 800)
         self.adjustSize()
@@ -68,8 +49,8 @@ class MainWindow(QMainWindow):
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu("File")
         open_dir_action = file_menu.addAction("Open directory", self.do_smth_using_dir)
-        add_analysis_action = file_menu.addAction("Add analysis", self.add_analysis_widget)
-        edit_menu = menu_bar.addMenu("&Edit")
+        add_analysis_action = file_menu.addAction("Add analysis", self.main_container.add_file_analysis_widget)
+        edit_menu = menu_bar.addMenu("Edit")
     
     
     def do_smth_using_dir(self):
@@ -88,16 +69,3 @@ class MainWindow(QMainWindow):
         return dir_path
     
     
-    def add_analysis_widget(self):
-        a = FileAnalysisWidget("ex1-spec.jpg")
-        print("AnalysisWidget sizeHint:", str(a.sizeHint()))
-        self.v_box.addStretch()
-        self.v_box.addWidget(a, 0)
-        # self.v_box.update()
-        print("main_container sizeHint:", str(self.main_container.sizeHint()))
-        self.main_container.adjustSize()
-        self.main_container.update()
-        l = self.main_container.children()
-        for child in l:
-            print(id(child), type(child).__name__, "main_container child geometry:", str(child.geometry()))
-        print("main_container:", str(self.main_container.size()))

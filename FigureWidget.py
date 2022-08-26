@@ -34,7 +34,7 @@ class FigureWidget(QWidget):
         # static_canvas = FigureCanvas(self.figure)
         print(id(self), "canvas sizeHint:", str(self.canvas.sizeHint()))
         print(id(self), "canvas size:", str(self.canvas.size()))
-        self.nav_toolbar = NavigationToolbar2QT(self.canvas, self)
+        self.nav_toolbar = NavigationToolbar2QT(self.canvas, self, coordinates=False)
         print(id(self), "nav_toolbar sizeHint:", str(self.nav_toolbar.sizeHint()))
         print(id(self), "nav_toolbar size:", str(self.nav_toolbar.size()))
         # self.button = QPushButton('Plot')
@@ -62,7 +62,7 @@ class FigureWidget(QWidget):
         ax = self.figure.add_subplot(111)
         ax.plot(data, '*-')
         self.canvas.draw() # refresh canvas
-        
+
     # def sizeHint(self):
     #     return self.size()
 

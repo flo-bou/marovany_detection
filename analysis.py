@@ -1,17 +1,18 @@
 import glob
-import os
-import time
+# import os
+# import time
 
 import numpy as np
 from scipy.signal import hilbert
 from scipy.ndimage import median_filter
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+from matplotlib.pyplot import subplots
 # import mpld3
 # from mpld3 import plugins
-import librosa
-import librosa.display
+# import librosa
+# import librosa.display
 import pretty_midi
-import pypianoroll
+from pypianoroll import read as pianorollread
 
 
 def create_note_list():
@@ -24,6 +25,7 @@ def create_note_list():
             for nc in note_commas:
                 note_names.append(nl + str(nn) + nc)
     return note_names
+
 
 def get_note_guessed_from_fname(note_list: list, fname: str):
     """Extract MIDI note name based on wav filename. 
@@ -43,6 +45,7 @@ def get_note_guessed_from_fname(note_list: list, fname: str):
             break
     return midi_note
 
+
 def get_amplitude_envelope(y: np.ndarray, filter_timescale: int):
     """ Extract signal envelop, median filter it and normalize by max
 
@@ -58,6 +61,7 @@ def get_amplitude_envelope(y: np.ndarray, filter_timescale: int):
     amplitude_envelope = amplitude_envelope / max(amplitude_envelope)
     return amplitude_envelope
 
+
 def get_decal(y: np.ndarray, amplitude_envelope: np.ndarray, threshold: float):
     """
     Args:
@@ -71,9 +75,10 @@ def get_decal(y: np.ndarray, amplitude_envelope: np.ndarray, threshold: float):
     decal = new_binary[1:] - new_binary[0:-1]
     return decal
 
+
 def get_time_series_fig(y: np.ndarray, samp_rate):
     # plt.rcParams['figure.figsize'] = fig_size
-    fig, ax = plt.subplots()
+    fig, ax = subplots()
     # fig.set(figwidth=fig_size[0], figheight=fig_size[1])
     fig.set(tight_layout=True)
     ax.plot(np.linspace(0, len(y)/samp_rate, len(y)), y)
@@ -81,9 +86,17 @@ def get_time_series_fig(y: np.ndarray, samp_rate):
     return fig
 
 
-def get_pitch_detection_fig(ampl_envel: np.ndarray, threshold:float, min_duration: float, instru: pretty_midi.Instrument, decal: np.ndarray, midi_note: int, sample_rate):
+def get_pitch_detection_fig_and_add_note_to_instru(
+        ampl_envel: np.ndarray, 
+        threshold: float, 
+        min_duration: float, 
+        instru: pretty_midi.Instrument, 
+        decal: np.ndarray,
+        midi_note: int, 
+        sample_rate
+    ):
     # plt.rcParams['figure.figsize'] = fig_size
-    fig, ax = plt.subplots()
+    fig, ax = subplots()
     fig.set(tight_layout=True)
     x = np.linspace(0, len(ampl_envel)/sample_rate, len(ampl_envel))
     ax.plot(x, ampl_envel, 'b', linewidth=0.8)
@@ -96,14 +109,24 @@ def get_pitch_detection_fig(ampl_envel: np.ndarray, threshold:float, min_duratio
                     np.linspace(0, 1, 100), 'g-')
             ax.plot(np.linspace(end_ind, end_ind, 100)/sample_rate, 
                     np.linspace(0, 1, 100), 'r-')
-                # Create a Note instance for each note
+            # Create a Note instance for each note
             note = pretty_midi.Note(velocity=100, pitch=round(midi_note), start=start_ind/sample_rate, end=end_ind/sample_rate)
-            add_note_to_instru(note, instru)
+            instru.notes.append(note)
     return fig
 
 
-def add_note_to_instru(note: pretty_midi.Note, instru: pretty_midi.Instrument):
-    instru.notes.append(note)
+def add_notes_to_instru_from_decal(
+        instru: pretty_midi.Instrument, 
+        min_duration: float, 
+        decal: np.ndarray, 
+        midi_note: int, 
+        sample_rate
+    ):
+    for start_ind, end_ind in zip(np.where(decal==1)[0], np.where(decal==-1)[0]):
+        if (end_ind - start_ind)/sample_rate > min_duration:
+            # Create a Note instance for each note
+            note = pretty_midi.Note(velocity=100, pitch=round(midi_note), start=start_ind/sample_rate, end=end_ind/sample_rate)
+            instru.notes.append(note)
 
 
 def write_midi_file(midi: pretty_midi.PrettyMIDI, fname: str):
@@ -111,12 +134,12 @@ def write_midi_file(midi: pretty_midi.PrettyMIDI, fname: str):
 
 
 def get_multitrack_plot(fname: str):
-    multitrack = pypianoroll.read(fname)
+    multitrack = pianorollread(fname)
     multitrack_plot = multitrack.plot()
 
 
 def rest():
-    start = time.time()
+    # start = time.time()
 
     do_plot = True
     verbose = True
@@ -141,10 +164,10 @@ def rest():
         # time_series_fig = get_time_series_fig(fig_size=fig_size, y=y, samp_rate=sr)
         # pitch_detection_fig = get_pitch_detection_fig(fig_size=fig_size, ampl_envel=amplitude_envelope, threshold=threshold, min_duration=min_duration, instru=banjo_instru, decal=decal, midi_note=midi_note, sample_rate=sr)
 
-    plt.show()
+    # plt.show()
 
-    write_midi_file(banjo_MIDI, 'marovany.mid')
+    # write_midi_file(banjo_MIDI, 'marovany.mid')
     get_multitrack_plot("marovany.mid")
 
-    end = time.time()
-    print('time of analysis:', end-start)
+    # end = time.time()
+    # print('time of analysis:', end-start)

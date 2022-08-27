@@ -3,13 +3,15 @@ from PyQt6.QtCore import QSize
 import pretty_midi
 
 from FileAnalysisWidget import FileAnalysisWidget
-from analysis import get_note_guessed_from_fname
+from analysis import get_note_guessed_from_fname, create_note_list
 
 class MainContainer(QWidget):
 
     def __init__(self):
         super().__init__()
         self.dir_path = ""
+        self.init_midi_vars()
+        self.note_list = create_note_list()
         # self.dir_path = "C:/Users/admin/Project/MIDIconversion_marovany/capteurs/"
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.v_box = QVBoxLayout()
@@ -27,12 +29,12 @@ class MainContainer(QWidget):
         width = self.width()
         height = 0
         for child in self.children():
-            print(id(child), str(type(child).__name__) , "main_container child geometry:", str(child.geometry()))
+            # print(id(child), str(type(child).__name__) , "main_container child geometry:", str(child.geometry()))
             if not isinstance(child, QBoxLayout):
                 if child.width() > width:
                     width = child.width()
                 height = height + child.height()
-        print(id(child), "main_container child sizehint:", width, height)
+        # print(id(self), "main_container geometry:", str(self.geometry()))
         return QSize(width, height)
     
     
@@ -40,36 +42,38 @@ class MainContainer(QWidget):
         self.welcoming_widget = QLabel("Use « File » > « Import directory » to start the analysis.")
         self.welcoming_widget.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
         self.v_box.addWidget(self.welcoming_widget)
-
+    
+    
     def add_multiple_analysis_widget(self, file_paths: list):
-        del self.welcoming_widget # TODO
+        if self.welcoming_widget:
+            print("welcoming_widget :", type(self.welcoming_widget).__name__)
+            self.v_box.removeWidget(self.welcoming_widget)
+            print("welcoming_widget :", type(self.welcoming_widget).__name__)
+            self.welcoming_widget.deleteLater()
+            # self.welcoming_widget = None
         for file_path in file_paths:
             self.add_single_analysis_widget(fpath=file_path)
+        print(id(self), "main_container sizeHint:", str(self.sizeHint()))
         self.adjustSize()
-        self.update()
+        print(id(self), "main_container size:", str(self.size()))
+        # self.update()
+    
     
     def add_single_analysis_widget(self, fpath: str):
-        analysis_widget = FileAnalysisWidget(fpath=fpath)
-        print("AnalysisWidget sizeHint:", str(analysis_widget.sizeHint()))
-        self.v_box.addStretch()
-        self.v_box.addWidget(analysis_widget, 0)
-        # self.v_box.update()
-        print("main_container sizeHint:", str(self.sizeHint()))
-        self.adjustSize()
-        # self.main_container.update()
-        # children = self.children()
-        # for child in children:
-        #     print(id(child), type(child).__name__, "main_container child geometry:", str(child.geometry()))
-        print("main_container:", str(self.size()))
+        analysis_widget = FileAnalysisWidget(
+            fpath=fpath, 
+            note_list=self.note_list, 
+            instru=self.pmidi_instru
+        )
+        # print("AnalysisWidget sizeHint:", str(analysis_widget.sizeHint()))
+        self.v_box.addWidget(analysis_widget) # + param ,0
     
     
-    def get_midi_widget(self):
-        banjo_MIDI = pretty_midi.PrettyMIDI()
+    def init_midi_vars(self):
+        self.pmidi = pretty_midi.PrettyMIDI()
         # Create an Instrument instance for a banjo instrument
-        banjo_program = pretty_midi.instrument_name_to_program('Banjo')
-        banjo_instru = pretty_midi.Instrument(program=banjo_program)
+        self.pmidi_program = pretty_midi.instrument_name_to_program('Banjo')
+        self.pmidi_instru = pretty_midi.Instrument(program=self.pmidi_program)
         # Add the banjo instrument to the PrettyMIDI object
-        banjo_MIDI.instruments.append(banjo_instru)
-        
-        self.midi_note = get_note_guessed_from_fname(note_list=self.note_list, fname=self.file_path)
-        print("Guessed note :", self.midi_note)
+        self.pmidi.instruments.append(self.pmidi_instru)
+

@@ -59,9 +59,7 @@ class FileAnalysisWidget(QWidget):
         self.filter_timescale = 80 # parameter for note segmentation : median filter lenghth, the larger the smoother the signal envelop
         self.threshold = 0.15 # parameter for note segmentation : energy level above which a note occurrence is detected
         self.min_duration = 0.03 # parameter for note segmentation : minimal duration below which a note occurrence is discarded 
-        # self.wav_list = glob.glob('capteurs/*wav')
-        # Create a PrettyMIDI object
-        self.decal = None
+        self.is_analysis_done = False
     
     
     def generate_analysis(self):
@@ -70,15 +68,17 @@ class FileAnalysisWidget(QWidget):
         # audio data loading
         # print("Start of analysis")
         start = time()
-        self.y, self.sr = librosa_load(self.file_path, offset=0, duration=self.duration_for_analysis)
+        self.y, self.sr = librosa_load(self.file_path, offset=0, duration=self.duration_for_analysis, sr=None)
+        print("Duration of librosa.load() :", str(time()-start)) # long : 4 to 5 seconds
         self.amplitude_envelope = get_amplitude_envelope(y=self.y, filter_timescale=self.filter_timescale)
         self.decal = get_decal(y=self.y, amplitude_envelope=self.amplitude_envelope, threshold=self.threshold)
-        end = time()
-        print("Duration of generate_analysis() :", str(end-start))
+        self.is_analysis_done = True
+        print("Duration of generate_analysis() :", str(time()-start))
 
 
     def add_time_series_figure(self):
-        if not self.decal: # TODO ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+        start = time()
+        if not self.is_analysis_done:
             self.generate_analysis()
         self.time_series_figure_widget = FigureWidget(
             figure=get_time_series_fig(y=self.y, samp_rate=self.sr)
@@ -87,12 +87,22 @@ class FileAnalysisWidget(QWidget):
         # print(id(widget), type(widget).__name__, parent.id(), type(parent).__name__)
         if self.time_series_figure_widget.parent() is not self.figure_box:
             self.figure_box.addWidget(self.time_series_figure_widget)
+        
+        print("Duration of add_time_series_figure() :", str(time()-start))
+        print(id(self), "AnalysisWidget sizeHint:", str(self.sizeHint()))
         self.adjustSize()
+        print(id(self), "AnalysisWidget size:", str(self.size()))
+        
+        print("FileAnalysis parent :", self.parent()) # MainContainer
+        print(id(self.parent()), "AnalysisWidget parent sizeHint:", str(self.parent().sizeHint()))
+        self.parent().adjustSize()
+        print(id(self.parent()), "AnalysisWidget parent size:", str(self.parent().size()))
         # self.figure_box.update()
 
     
     def add_played_string_detection_figure(self):
-        if not self.decal:
+        start = time()
+        if not self.is_analysis_done:
             self.generate_analysis()
         self.played_string_detection_figure_widget = FigureWidget(
             figure=get_pitch_detection_fig_and_add_note_to_instru(
@@ -107,4 +117,7 @@ class FileAnalysisWidget(QWidget):
         )
         if self.played_string_detection_figure_widget.parent() is not self.figure_box:
             self.figure_box.addWidget(self.played_string_detection_figure_widget)
+        print("Duration of add_time_series_figure() :", str(time()-start))
         self.adjustSize()
+        print("FileAnalysis parent :", self.parent()) # MainContainer
+        self.parent().adjustSize()

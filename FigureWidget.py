@@ -49,11 +49,11 @@ class FigureWidget(QWidget):
         self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
         self.setLayout(layout)
         # print(id(self), "plot widget size:", str(self.size()))
-        print(id(self), "plot widget sizeHint:", str(self.sizeHint()))
+        print(id(self), "FigureWidget sizeHint:", str(self.sizeHint()))
         # self.adjustSize() # default size max is 1280px
         self.setFixedSize(self.sizeHint())
         # self.update()
-        print(id(self), "plot widget size:", str(self.size()))
+        print(id(self), "FigureWidget size:", str(self.size()))
 
     # action called by the push button
     def plot(self):

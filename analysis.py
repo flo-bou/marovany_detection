@@ -100,7 +100,7 @@ def get_pitch_detection_fig_and_add_note_to_instru(
     fig.set(tight_layout=True)
     x = np.linspace(0, len(ampl_envel)/sample_rate, len(ampl_envel))
     ax.plot(x, ampl_envel, 'b', linewidth=0.8)
-    ax.plot(x, np.linspace(threshold, threshold, len(ampl_envel)), 'k--',linewidth=0.8)
+    ax.plot(x, np.linspace(threshold, threshold, len(ampl_envel)), 'k--', linewidth=0.8)
 
     # loop over events
     for start_ind, end_ind in zip(np.where(decal==1)[0], np.where(decal==-1)[0]):
@@ -112,6 +112,7 @@ def get_pitch_detection_fig_and_add_note_to_instru(
             # Create a Note instance for each note
             note = pretty_midi.Note(velocity=100, pitch=round(midi_note), start=start_ind/sample_rate, end=end_ind/sample_rate)
             instru.notes.append(note)
+    ax.autoscale(enable=True, axis='x', tight=True)
     return fig
 
 
@@ -133,9 +134,15 @@ def write_midi_file(midi: pretty_midi.PrettyMIDI, fname: str):
     midi.write(fname)
 
 
-def get_multitrack_plot(fname: str):
+def get_multitrack_fig(fname: str):
     multitrack = pianorollread(fname)
-    multitrack_plot = multitrack.plot()
+    multitrack_plot: np.ndarray = multitrack.plot()
+    # fig, ax = subplots()
+    # fig.set(tight_layout=True)
+    # x = np.linspace(0, len(ampl_envel)/sample_rate, len(ampl_envel))
+    # ax.plot(x, ampl_envel, 'b', linewidth=0.8)
+    # ax.plot(x, np.linspace(threshold, threshold, len(ampl_envel)), 'k--', linewidth=0.8)
+    return multitrack_plot
 
 
 def rest():
@@ -167,7 +174,7 @@ def rest():
     # plt.show()
 
     # write_midi_file(banjo_MIDI, 'marovany.mid')
-    get_multitrack_plot("marovany.mid")
+    # get_multitrack_plot("marovany.mid")
 
     # end = time.time()
     # print('time of analysis:', end-start)

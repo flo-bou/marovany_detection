@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         height = int(self.screen_available_size.height() * 0.85)
         self.scroll_area.setFixedSize(width, height)
         print("scroll_area size:", str(self.scroll_area.size()))
-        
+        # ssignal slot to send scroll area size
         self.create_menu()
         
         self.setCentralWidget(self.scroll_area)

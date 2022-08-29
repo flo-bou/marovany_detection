@@ -22,11 +22,9 @@ class FigureWidget(QWidget):
         super().__init__()
         
         # self.fig_size = [28, 14]
-        fig_size = [12, 3]
-        # self.figure = plt.figure() # a figure instance to plot on
+        fig_size = [12, 3] # 12, 3 mean 1200px, 300px
         self.figure = figure
-        self.figure.set(figwidth=fig_size[0], figheight=fig_size[1]) # 10 = 1000px
-        # self.figure.
+        # self.figure.set(figwidth=fig_size[0], figheight=fig_size[1]) # 10 = 1000px
         print(id(self.figure), "figure", self.figure)
         # print(id(self.figure2), "figure2", self.figure)
         
@@ -65,4 +63,3 @@ class FigureWidget(QWidget):
 
     # def sizeHint(self):
     #     return self.size()
-

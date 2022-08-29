@@ -4,7 +4,7 @@
 # *.ipynb
 *.mid
 *.wav
-*.txt
+# *.txt
 # poetry.lock
 
 __pycache__/

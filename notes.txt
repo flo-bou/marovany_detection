@@ -1,0 +1,63 @@
+note pitch = hauteur de note
+pitch = fréquence fondamentale / fondamentale 
+pitch tracking = suivi de notes
+pitch estimation  = estimation de la hauteur
+
+violet = pitch tracking (pas intéressant à montrer)
+onset_strenght =  tiret rouge 
+a l'importation on fait série temporelle
+série temporelle = (x milieu)
+
+piano roll = partition midi
+pitch tracking fait mais non affiche
+ou  remplacement de la note detectée par une valeur entrée par l'utilisateur
+
+delta à parametrer à la main
+temporelle
+
+Tester sous MacOS/Linux
+
+
+TODO
+changer le seuil (threshold) facilemtn une fois que les plot sont visible pour changer les résultats derrière
+seuil différents
+bug de redimensionnement de FileAnaysis Widget ++
+bug de redimensionnement de Maincontainer ?
+librosa.load() sr=None -> bcp plus rapide. Default is 22k, examples files is 44 kHz --> Vérifier les valeurs
+        # ssignal slot to send scroll area size
+deamnder le code pour le plot de midi
+
+
+forme d’onde
+regarder matplotlib
+
+GUI :
+créer un item
+remplir le canva
+
+
+played string detection / played string segmentation
+
+mettre tout le analysis in Widgets classes
+
+
+
+V0 / MVP
+import folder
+display files
+display plot of times series
+display plot of notes detection
+display plot of midi conversion
+display plot of multitrack midi file
+export midi file (single and multitrack)
+
+
+V1  add widget on top to analyse all
+add params dialog widget
+add multiple versions of same plots
+delete plot
+manually add single file
+manually remove single file
+when multiple versions of same plot
+add wav file reader
+add midi file reader

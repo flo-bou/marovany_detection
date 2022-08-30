@@ -6,6 +6,9 @@
 *.wav
 # *.txt
 # poetry.lock
+dist/
+build/
+imgs/
 
 __pycache__/
 .idea/

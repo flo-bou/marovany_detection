@@ -5,7 +5,7 @@ description = ""
 authors = ["flo-bou <florent.b@gmx.com>"]
 
 [tool.poetry.dependencies]
-python = "3.8.*"
+python = "3.8.10"
 PyQt6 = "^6.3.1"
 numpy = "1.22.*"
 librosa = "^0.9.2"

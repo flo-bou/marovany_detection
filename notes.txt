@@ -65,3 +65,11 @@ add midi file reader
 File dialog starts at user dir folder
 when File dialog does not found wav : feedback message
 
+
+bug
+midi_note value may be None
+
+
+tailles (scroll area) : 
+    champagne Mint : 1600x918, ratio 1.0, fig 7.9x2.7
+    NOIR :

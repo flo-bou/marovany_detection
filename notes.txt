@@ -43,6 +43,7 @@ mettre tout le analysis in Widgets classes
 
 
 V0 / MVP
+------------------
 import folder
 display files
 display plot of times series
@@ -50,9 +51,13 @@ display plot of notes detection
 display plot of midi conversion
 display plot of multitrack midi file
 export midi file (single and multitrack)
+display note corresponding to file
+possibility to change note corresponding to to file
 
+bug : midi_note value may be None
 
-V1  
+V1 
+-------------------
 add widget on top to analyse all
 add params dialog widget
 add multiple versions of same plots
@@ -66,8 +71,6 @@ File dialog starts at user dir folder
 when File dialog does not found wav : feedback message
 
 
-bug
-midi_note value may be None
 
 
 tailles (scroll area) : 

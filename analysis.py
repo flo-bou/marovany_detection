@@ -81,18 +81,19 @@ def get_time_series_fig(y: np.ndarray, samp_rate):
     fig, ax = subplots()
     # fig.set(figwidth=fig_size[0], figheight=fig_size[1])
     fig.set(tight_layout=True)
-    ax.plot(np.linspace(0, len(y)/samp_rate, len(y)), y)
+    x = np.linspace(0, len(y)/samp_rate, len(y))
+    ax.plot(x, y)
     ax.autoscale(enable=True, axis='x', tight=True)
     return fig
 
 
-def get_pitch_detection_fig_and_add_note_to_instru(
+def get_pitch_detection_fig(
         ampl_envel: np.ndarray, 
         threshold: float, 
         min_duration: float, 
-        instru: pretty_midi.Instrument, 
+        # instru: pretty_midi.Instrument, 
         decal: np.ndarray,
-        midi_note: int, 
+        # midi_note: int | None, 
         sample_rate
     ):
     # plt.rcParams['figure.figsize'] = fig_size
@@ -110,39 +111,42 @@ def get_pitch_detection_fig_and_add_note_to_instru(
             ax.plot(np.linspace(end_ind, end_ind, 100)/sample_rate, 
                     np.linspace(0, 1, 100), 'r-')
             # Create a Note instance for each note
-            note = pretty_midi.Note(velocity=100, pitch=round(midi_note), start=start_ind/sample_rate, end=end_ind/sample_rate)
-            instru.notes.append(note)
+            # note = pretty_midi.Note(velocity=100, pitch=round(midi_note), start=start_ind/sample_rate, end=end_ind/sample_rate)
+            # instru.notes.append(note)
     ax.autoscale(enable=True, axis='x', tight=True)
     return fig
 
 
-def add_notes_to_instru_from_decal(
-        instru: pretty_midi.Instrument, 
-        min_duration: float, 
-        decal: np.ndarray, 
-        midi_note: int, 
-        sample_rate
-    ):
-    for start_ind, end_ind in zip(np.where(decal==1)[0], np.where(decal==-1)[0]):
-        if (end_ind - start_ind)/sample_rate > min_duration:
-            # Create a Note instance for each note
-            note = pretty_midi.Note(velocity=100, pitch=round(midi_note), start=start_ind/sample_rate, end=end_ind/sample_rate)
-            instru.notes.append(note)
+# def add_notes_to_instru_from_decal(
+#         instru: pretty_midi.Instrument, 
+#         min_duration: float, 
+#         decal: np.ndarray, 
+#         midi_note: int | None, 
+#         sample_rate
+#     ):
+#     if midi_note != None:
+#         for start_ind, end_ind in zip(np.where(decal==1)[0], np.where(decal==-1)[0]):
+#             if (end_ind - start_ind)/sample_rate > min_duration:
+#                 # Create a Note instance for each note
+#                 note = pretty_midi.Note(velocity=100, pitch=round(midi_note), start=start_ind/sample_rate, end=end_ind/sample_rate)
+#                 instru.notes.append(note)
+#     else:
+#         print("ERROR : Note not identified. No note added to instrument")
 
 
-def write_midi_file(midi: pretty_midi.PrettyMIDI, fname: str):
-    midi.write(fname)
-
-
-def get_multitrack_fig(fname: str):
+def get_multitrack_fig(fname: str, y: np.ndarray, samp_rate):
     multitrack = pianorollread(fname)
     multitrack_plot: np.ndarray = multitrack.plot()
+    print(multitrack_plot)
     # fig, ax = subplots()
     # fig.set(tight_layout=True)
-    # x = np.linspace(0, len(ampl_envel)/sample_rate, len(ampl_envel))
-    # ax.plot(x, ampl_envel, 'b', linewidth=0.8)
-    # ax.plot(x, np.linspace(threshold, threshold, len(ampl_envel)), 'k--', linewidth=0.8)
-    return multitrack_plot
+    # x = np.linspace(0, len(y)/samp_rate, len(y))
+    # # x = np.linspace(0, len(ampl_envel)/sample_rate, len(ampl_envel))
+    # ax.plot(x, multitrack_plot)
+    # # ax.plot(x, ampl_envel, 'b', linewidth=0.8)
+    # # ax.plot(x, np.linspace(threshold, threshold, len(ampl_envel)), 'k--', linewidth=0.8)
+    # ax.autoscale(enable=True, axis='x', tight=True)
+    # return fig
 
 
 def rest():

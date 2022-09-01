@@ -1,6 +1,7 @@
 from time import time
 
-from PyQt6.QtWidgets import (QWidget, QLabel, QBoxLayout, QVBoxLayout, QHBoxLayout, 
+from PyQt6.QtWidgets import (QWidget, QLabel, 
+                             QBoxLayout, QVBoxLayout, QHBoxLayout, 
                              QPushButton, QSizePolicy)
 from PyQt6.QtCore import Qt, QSize
 from librosa import load as librosa_load
@@ -133,13 +134,13 @@ class FileAnalysisWidget(QWidget):
         start = time()
         if not self.is_analysis_done:
             self.generate_analysis()
-        fig = get_pitch_detection_fig_and_add_note_to_instru(
+        fig = get_pitch_detection_fig(
             ampl_envel=self.amplitude_envelope, 
             threshold=self.threshold, 
             min_duration=self.min_duration, 
-            instru=self.instru, 
+            # instru=self.instru, 
             decal=self.decal, 
-            midi_note=self.midi_note, 
+            # midi_note=self.midi_note, 
             sample_rate=self.sr
         )
         fig.set(figwidth=self.fig_size[0], figheight=self.fig_size[1]) # 10 = 1000px
@@ -161,6 +162,24 @@ class FileAnalysisWidget(QWidget):
         
         # write_midi_file(banjo_MIDI, 'marovany.mid')
         # get_multitrack_plot("marovany.mid")
+    
+    
+    def add_notes_to_instru_from_decal(self):
+        if not self.is_analysis_done:
+            self.generate_analysis()
+            if self.midi_note != None:
+                for start_ind, end_ind in zip(np.where(self.decal==1)[0], np.where(self.decal==-1)[0]):
+                    if (end_ind - start_ind)/self.sample_rate > self.min_duration:
+                        # Create a Note instance for each note
+                        note = pretty_midi.Note(
+                            velocity=100, 
+                            pitch=round(self.midi_note), 
+                            start=start_ind/self.sample_rate, 
+                            end=end_ind/self.sample_rate
+                        )
+                        self.instru.notes.append(note)
+            else:
+                print("ERROR : Note not identified. No note added to instrument")
     
     
     def get_figure_size(self):

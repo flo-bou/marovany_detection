@@ -1,0 +1,1 @@
+poetry run pyinstaller --windowed --name marovany --collect-data librosa main.py

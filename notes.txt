@@ -44,16 +44,16 @@ mettre tout le analysis in Widgets classes
 
 V0 / MVP
 ------------------
-import folder
-display files
-display plot of times series
-display plot of notes detection
+import folder : done
+display files : done
+display plot of times series : done
+display plot of notes detection : done
 display plot of midi conversion
-display plot of multitrack midi file
+display plot of multitrack midi file : TODO
 export midi file (single and multitrack)
 display note corresponding to file
-possibility to change note corresponding to to file
-
+possibility to change note corresponding to to file : TODO
+add midi processing button in header widget
 bug : midi_note value may be None
 
 V1 
@@ -69,8 +69,12 @@ add wav file reader
 add midi file reader
 File dialog starts at user dir folder
 when File dialog does not found wav : feedback message
+add log system
 
 
+ISSUES
+numba build
+numba is a dependancy of librosa and resampy (dep of librosa)
 
 
 tailles (scroll area) : 

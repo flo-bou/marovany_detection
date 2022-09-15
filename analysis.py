@@ -1,24 +1,18 @@
 import glob
-# import os
-# import time
 
 import numpy as np
 from scipy.signal import hilbert
 from scipy.ndimage import median_filter
 # import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
-# import mpld3
-# from mpld3 import plugins
-# import librosa
-# import librosa.display
 import pretty_midi
 from pypianoroll import read as pianorollread
 
 
 def create_note_list():
-    note_letters = ['E','D','B','G']
+    note_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
     note_numbers = range(10)
-    note_commas = ['', '#']
+    note_commas = ['#', '']
     note_names = []
     for nl in note_letters:
         for nn in note_numbers:
@@ -32,18 +26,40 @@ def get_note_guessed_from_fname(note_list: list, fname: str):
     Note name should be in the filename
 
     Args:
-        note_list (list[str]): List of every possible notes as strings
+        note_list (list[str]): List of possible notes as strings
         fname (str): name of wav file
 
     Returns:
-        int or None: note number in midi format or None if note name was not in file name
+        A tuple containing :
+            str or None : the note name
+            int or None : the note number in pretty_midi format or None if note name was not in file name
     """
     midi_note = None
-    for note_candidate in note_list: # attention, A est reconnus même quand la note est A#
+    note_name = None
+    for note_candidate in note_list:
         if note_candidate in fname:
+            note_name = note_candidate
             midi_note = pretty_midi.note_name_to_number(note_candidate)
             break
-    return midi_note
+    return note_name, midi_note
+
+
+def verify_note_proposition(note_list: list, note_name: str):
+    """Verify a note name proposal (by the user)
+
+    Args:
+        note_list (list[str]): List of possible notes as strings
+        note_name (str): name of note
+
+    Returns:
+        A tuple containing :
+            str : the note name
+            int or None : the note number in pretty_midi format or None if note_name was not in note_list
+    """
+    midi_note = None
+    if note_name in note_list:
+        midi_note = pretty_midi.note_name_to_number(note_name)
+    return note_name, midi_note
 
 
 def get_amplitude_envelope(y: np.ndarray, filter_timescale: int):

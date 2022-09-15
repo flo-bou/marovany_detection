@@ -14,8 +14,6 @@ class MainWindow(QMainWindow):
         self.get_screen_size()
         
         self.main_container = MainContainer()
-        # scroll_area is the centralWidget
-        # scroll_area contains the main_container
         self.scroll_area = QScrollArea()
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
@@ -25,14 +23,14 @@ class MainWindow(QMainWindow):
         height = int(self.screen_available_size.height() * 0.85)
         self.scroll_area.setFixedSize(width, height)
         print("scroll_area size:", str(self.scroll_area.size()))
-        # ssignal slot to send scroll area size
+        # signal slot to send scroll area size
         self.create_menu()
         
         self.setCentralWidget(self.scroll_area)
         # self.setGeometry(100, 100, 1200, 800)
         self.adjustSize()
         # print("devicePixelRatio", self.devicePixelRatio())
-        self.setWindowTitle('Scroll Area Demo')
+        self.setWindowTitle('Marovany')
         # print("main_window size:", str(self.size()))
         # print("main_window geometry:", str(self.geometry()))
     
@@ -48,9 +46,9 @@ class MainWindow(QMainWindow):
     def create_menu(self):
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu("File")
-        open_dir_action = file_menu.addAction("Open directory", self.main_container.open_dir)
+        open_dir_action = file_menu.addAction("Import directory", self.main_container.open_dir)
         # add_analysis_action = file_menu.addAction("Add analysis", self.main_container.add_file_analysis_widget())
-        edit_menu = menu_bar.addMenu("Edit")
+        # edit_menu = menu_bar.addMenu("Edit")
     
     
     # def open_dir(self):

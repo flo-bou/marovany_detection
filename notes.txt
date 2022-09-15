@@ -52,7 +52,7 @@ display plot of midi conversion
 display plot of multitrack midi file : TODO
 export midi file (single and multitrack)
 display note corresponding to file
-possibility to change note corresponding to to file : TODO
+possibility to change note corresponding to file : TODO
 add midi processing button in header widget
 bug : midi_note value may be None
 
@@ -70,7 +70,7 @@ add midi file reader
 File dialog starts at user dir folder
 when File dialog does not found wav : feedback message
 add log system
-
+trouver un nom
 
 ISSUES
 numba build
@@ -80,3 +80,27 @@ numba is a dependancy of librosa and resampy (dep of librosa)
 tailles (scroll area) : 
     champagne Mint : 1600x918, ratio 1.0, fig 7.9x2.7
     NOIR :
+
+
+BUGS
+----
+* crash when exiting the directory selector without selecting one (ie exiting the File Dialog)
+* duplicate of header when using add directory a seconde times
+
+
+mac ERRORS
+----------
+unable to create basic accelarated opengl renderer.
+Now using the software opengl renderer. This will be slow
+==> hardware openGL not accessed. So using software render (more ressources needed). Not enought memory ?
+
+cannot find path ./libompo.dylib
+
+
+add in dev dependancies:
+pyinstaller
+python3-dev
+https://www.stechies.com/pythondev-package/
+https://pypi.org/project/python-dev-tools/
+
+pip install python-dev-tools

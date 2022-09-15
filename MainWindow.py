@@ -11,37 +11,33 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.get_screen_size()
-        
-        self.main_container = MainContainer()
         self.scroll_area = QScrollArea()
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         # self.scroll_area.setWidgetResizable(True)
+        app_size = self.get_app_size()
+        self.scroll_area.setFixedSize(*app_size)
+        self.main_container = MainContainer(app_size=app_size)
         self.scroll_area.setWidget(self.main_container)
-        width = int(self.screen_available_size.width() * 0.85)
-        height = int(self.screen_available_size.height() * 0.85)
-        self.scroll_area.setFixedSize(width, height)
         print("scroll_area size:", str(self.scroll_area.size()))
-        # signal slot to send scroll area size
         self.create_menu()
         
         self.setCentralWidget(self.scroll_area)
-        # self.setGeometry(100, 100, 1200, 800)
         self.adjustSize()
-        # print("devicePixelRatio", self.devicePixelRatio())
         self.setWindowTitle('Marovany')
-        # print("main_window size:", str(self.size()))
-        # print("main_window geometry:", str(self.geometry()))
     
     
-    def get_screen_size(self):
+    def get_app_size(self):
         screen = self.screen()
         self.device_pixel_ratio = screen.devicePixelRatio()
         print("device_pixel_ratio", self.device_pixel_ratio)
         self.screen_available_size = screen.availableSize()
         print("screen_available_size", self.screen_available_size)
-
+        width = int(self.screen_available_size.width() * 0.85)
+        height = int(self.screen_available_size.height() * 0.85)
+        print("app_size", width, height)
+        return width, height
+    
 
     def create_menu(self):
         menu_bar = self.menuBar()

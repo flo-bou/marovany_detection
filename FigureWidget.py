@@ -21,44 +21,27 @@ class FigureWidget(QWidget):
         """
         super().__init__()
         
-        # self.fig_size = [28, 14]
-        # fig_size = [12, 3] # 12, 3 mean 1200px, 300px
         if figure != None:
-            self.figure = figure
-            # self.figure.set(figwidth=fig_size[0], figheight=fig_size[1]) # 10 = 1000px
+            self.figure = figure # fig_size = [12, 3] means [1200px, 300px]
             print(id(self.figure), "figure", self.figure)
             # print(id(self.figure2), "figure2", self.figure)
-            
             self.canvas = FigureCanvasQTAgg(self.figure)
             # static_canvas = FigureCanvas(self.figure)
             print(id(self), "canvas sizeHint:", str(self.canvas.sizeHint()))
             print(id(self), "canvas size:", str(self.canvas.size()))
             self.nav_toolbar = NavigationToolbar2QT(self.canvas, self, coordinates=False)
-            # print(id(self), "nav_toolbar sizeHint:", str(self.nav_toolbar.sizeHint()))
-            # print(id(self), "nav_toolbar size:", str(self.nav_toolbar.size()))
-            # self.button = QPushButton('Plot')
-            # self.button.clicked.connect(self.plot)
+            
             layout = QVBoxLayout()
-            layout.addWidget(self.canvas)
-            layout.addWidget(self.nav_toolbar)
-            # layout.addWidget(self.button)
-            # self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-            self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setSpacing(0)
+            layout.addWidget(self.canvas, 0)
+            layout.addWidget(self.nav_toolbar, 0)
+            
+            self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+            self.setStyleSheet("border: 0px solid")
             self.setLayout(layout)
-        # print(id(self), "plot widget size:", str(self.size()))
         print(id(self), "FigureWidget sizeHint:", str(self.sizeHint()))
         # self.adjustSize() # default size max is 1280px
         self.setFixedSize(self.sizeHint())
         # self.update()
         print(id(self), "FigureWidget size:", str(self.size()))
-
-    # old code
-    def plot(self):
-        data = [random.random() for i in range(20)] # random data
-        self.figure.clear() # clearing old figure
-        ax = self.figure.add_subplot(111)
-        ax.plot(data, '*-')
-        self.canvas.draw() # refresh canvas
-
-    # def sizeHint(self):
-    #     return self.size()

@@ -26,6 +26,8 @@ bug de redimensionnement de Maincontainer ?
 librosa.load() sr=None -> bcp plus rapide. Default is 22k, examples files is 44 kHz --> Vérifier les valeurs
 # signal slot to send scroll area size
 deamnder le code pour le plot de midi
+look at setSizeConstraint
+tester gameLabel.resize(gameLabel.sizeHint());
 
 
 forme d’onde
@@ -79,7 +81,7 @@ numba is a dependancy of librosa and resampy (dep of librosa)
 
 tailles (scroll area) : 
     champagne Mint : 1600x918, ratio 1.0, fig 7.9x2.7
-    NOIR :
+    NOIR : 1579x918,  ratio 1.0, fig 7.9x2.7
 
 
 BUGS

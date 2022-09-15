@@ -11,22 +11,25 @@ from analysis import *
 
 class MainContainer(QWidget):
 
-    def __init__(self):
+    def __init__(self, app_size: tuple):
         super().__init__()
         self.dir_path = ""
+        self.app_size = app_size
         self.init_midi_vars()
         self.note_list = create_note_list()
-
         
         self.header_widget = self.get_header_widget()
         self.v_box = QVBoxLayout()
+        self.v_box.addWidget(self.header_widget, 0)
+        self.v_box.setContentsMargins(10, 0, 0, 0)
         self.v_box.setSpacing(0)
-        self.v_box.addWidget(self.header_widget)
-        self.v_box.setAlignment(Qt.AlignmentFlag.AlignTop)
+        # self.v_box.setAlignment(Qt.AlignmentFlag.AlignTop)
         
-        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        # self.setStyleSheet("FileAnlysisWidget {border: 1px solid}")
         self.setLayout(self.v_box)
         self.adjustSize()
+        self.update()
         print(id(self), "main_container size:", str(self.size()))
         # self.update()
     
@@ -38,7 +41,7 @@ class MainContainer(QWidget):
             if not isinstance(child, QBoxLayout):
                 if child.width() > width:
                     width = child.width()
-                height = height + child.height()
+                height = height + child.height() + 10
         print(id(self), "MainContainer sizeHint :", width, height)
         return QSize(width, height)
     
@@ -46,7 +49,6 @@ class MainContainer(QWidget):
     def get_header_widget(self):
         # TODO : keep that widget and add button for midi
         self.welcoming_label = QLabel("Use the menu buttons ‘File’ then ‘Import directory’ to start the analysis.")
-
         self.header_box = QHBoxLayout()
         self.header_box.addWidget(self.welcoming_label)
         # self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
@@ -68,7 +70,6 @@ class MainContainer(QWidget):
         self.welcoming_label.deleteLater()
         # for child in self.header_box.children():
         #     child.deleteLater()
-        
         self.midi_btn = QPushButton("Generate multitrack midi")
         self.midi_btn.clicked.connect(self.generate_multitrack_midi_file_and_add_plot)
         self.analysis_btn = QPushButton("Analyze all")
@@ -78,8 +79,9 @@ class MainContainer(QWidget):
         self.header_box.addWidget(self.analysis_btn)
         # self.header_box.adjustSize()
         self.header_widget.adjustSize()
+        self.header_widget.update()
         # self.adjustSize()
-        self.update()
+        # self.update()
 
     
     def add_plots_to_fileAnalysisWidgets(self):
@@ -104,24 +106,6 @@ class MainContainer(QWidget):
         # self.midi_fig = get_multitrack_fig(fname=self.midi_fname, y=, samp_rate=)
     
     
-    def add_multiple_analysis_widget(self, file_paths: list):
-        self.update_header_widget()
-        for file_path in file_paths:
-            self.add_single_analysis_widget(fpath=file_path)
-        self.adjustSize()
-        print(id(self), "main_container size:", str(self.size()))
-        # self.update()
-    
-    
-    def add_single_analysis_widget(self, fpath: str):
-        analysis_widget = FileAnalysisWidget(
-            fpath=fpath, 
-            note_list=self.note_list, 
-            instru=self.pmidi_instru
-        )
-        self.v_box.addWidget(analysis_widget) # + param ,0
-    
-    
     def init_midi_vars(self):
         self.pmidi = pretty_midi.PrettyMIDI()
         # Create an Instrument instance for a banjo instrument
@@ -129,9 +113,10 @@ class MainContainer(QWidget):
         self.pmidi_instru = pretty_midi.Instrument(program=self.pmidi_program)
         # Add the banjo instrument to the PrettyMIDI object
         self.pmidi.instruments.append(self.pmidi_instru)
-
+    
     
     def open_dir(self):
+        # called by the menu button "File" -> "Import directory"
         # Only files with the .wav extensions will be used
         self.dir_path = QFileDialog.getExistingDirectory(
                 parent=None, 
@@ -150,3 +135,22 @@ class MainContainer(QWidget):
             self.add_multiple_analysis_widget(file_paths=wav_file_paths)
         else:
             print("No .wav files found in ", self.dir_path)
+        self.adjustSize()
+        self.update()
+    
+    
+    def add_multiple_analysis_widget(self, file_paths: list):
+        self.update_header_widget()
+        for file_path in file_paths:
+            self.add_single_analysis_widget(fpath=file_path)
+        print(id(self), "main_container size:", str(self.size()))
+    
+    
+    def add_single_analysis_widget(self, fpath: str):
+        analysis_widget = FileAnalysisWidget(
+            fpath=fpath, 
+            note_list=self.note_list, 
+            instru=self.pmidi_instru,
+            app_size=self.app_size
+        )
+        self.v_box.addWidget(analysis_widget, 0) # + param ,0

@@ -15,18 +15,22 @@ from analysis import *
 class FileAnalysisWidget(QWidget):
     """Widget containing analysis of wav files, its figures and buttons to run them
     """
-    def __init__(self, fpath: str, note_list: list, instru: pretty_midi.Instrument):
+    def __init__(self, fpath: str, note_list: list, instru: pretty_midi.Instrument, app_size: tuple):
         super().__init__()
         self.file_path = fpath
         self.note_list = note_list
         self.instru = instru
+        self.app_size = app_size
         self.init_var()
 
         self.header = FileAnalysisHeader(fname=self.fname, note=self.note_name, parent=self)
         self.main_box = QVBoxLayout()
-        self.main_box.addWidget(self.header)
+        self.main_box.setContentsMargins(0, 0, 0, 0)
+        self.main_box.setSpacing(0)
+        self.main_box.addWidget(self.header, 0)
         
-        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.setStyleSheet("FileAnalysisWidget {background-color: yellow}")
         self.setLayout(self.main_box)
         self.adjustSize()
         # print(id(self), "FileAnalysisWidget size at init:", str(self.size()))
@@ -80,7 +84,7 @@ class FileAnalysisWidget(QWidget):
             figure=fig
         )
         self.figure = self.time_series_figure_widget
-        self.main_box.addWidget(self.time_series_figure_widget)
+        self.main_box.addWidget(self.time_series_figure_widget, 0)
         
         print("Duration of add_time_series_figure() :", str(time()-start))
         self.adjustSize()
@@ -145,12 +149,14 @@ class FileAnalysisWidget(QWidget):
     
     
     def get_figure_size(self):
-        screen_width = 1579
-        screen_height = 918
+        # retrieve size of scroll_area widget
+        app_width, app_height = self.app_size
+        # app_width = 1579
+        # app_height = 918
         duration = self.duration_for_analysis
-        fig_width = screen_width / 30 * duration / 100 # Default width is 1 full width = 30 secs
-        fig_height = screen_height * 0.3 / 100 # Default height is 1/3 of app height. / 100 to convert to matplotlib's size
-        fig_width = max(fig_width, screen_width / 2 / 100) # half of window’s width as min
+        fig_width = app_width / 30 * duration / 100 # Default width is 1 full width = 30 secs
+        fig_height = app_height * 0.3 / 100 # Default height is 1/3 of app height. / 100 to convert to matplotlib's size
+        fig_width = max(fig_width, app_width / 2 / 100) # half of window’s width as min
         fig_width = min(fig_width, 40) # 3400px max
         print("fig size is", fig_width, fig_height)
         return [fig_width, fig_height]

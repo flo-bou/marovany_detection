@@ -53,10 +53,13 @@ display plot of notes detection : done
 display plot of midi conversion
 display plot of multitrack midi file : TODO
 export midi file (single and multitrack)
-display note corresponding to file
-possibility to change note corresponding to file : TODO
+display note corresponding to file and view when modified TODO 
+possibility to change note corresponding to file : DONE
 add midi processing button in header widget
-bug : midi_note value may be None
+bug : midi_note value may be None DONE
+Link new params to new plots TODO
+Display note detection plots : TODO
+Functionnal Analyse all button
 
 V1 
 -------------------
@@ -73,6 +76,7 @@ File dialog starts at user dir folder
 when File dialog does not found wav : feedback message
 add log system
 trouver un nom
+dropdown option menu with possibilies to remove file/plots (by index) 
 
 ISSUES
 numba build

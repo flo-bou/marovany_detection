@@ -38,34 +38,17 @@ class MainWindow(QMainWindow):
         print("app_size", width, height)
         return width, height
     
-
+    
     def create_menu(self):
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu("File")
-        open_dir_action = file_menu.addAction("Import directory", self.main_container.open_dir)
+        import_dir_action = file_menu.addAction("Import a directory", self.main_container.import_dir)
+        import_file_action = file_menu.addAction("Import a single file", self.main_container.import_file)
         # add_analysis_action = file_menu.addAction("Add analysis", self.main_container.add_file_analysis_widget())
         # edit_menu = menu_bar.addMenu("Edit")
-    
-    
-    # def open_dir(self):
-    #     # Only files with the .wav extensions will be used
-    #     self.dir_path = QFileDialog.getExistingDirectory(parent=None, caption="Choose a directory containing wav files to analyse.", directory="", options=QFileDialog.Option.ShowDirsOnly)
-    #     print(str(self.dir_path))
-    #     dir_content = listdir(self.dir_path)
-    #     print("dir_content", dir_content)
-    #     file_paths = list(map(lambda file_name: self.dir_path + "/" + file_name, dir_content))
-    #     print("file_paths", file_paths)
-    #     wav_file_paths = list(filter(lambda file_path: file_path.split(".")[-1]=="wav", file_paths))
-    #     print("wav_files", wav_file_paths)
-    #     if len(wav_file_paths)>0:
-    #         self.main_container.add_multiple_analysis_widget(file_paths=wav_file_paths)
-    #     else:
-    #         print("No .wav files found in ", self.dir_path)
     
     
     def get_dir_using_dialog(self):
         dir_path = QFileDialog.getExistingDirectory(parent=None, caption="Choose a directory containing wav files to analyse.", directory="", options=QFileDialog.Option.ShowDirsOnly)
         print(str(dir_path))
         return dir_path
-    
-

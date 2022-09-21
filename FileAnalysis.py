@@ -1,18 +1,19 @@
 from time import time
 
-from PyQt6.QtWidgets import (QWidget, QLabel, 
-                             QBoxLayout, QVBoxLayout, QHBoxLayout, 
-                             QPushButton, QSizePolicy)
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtWidgets import (QWidget,
+                             QBoxLayout, QVBoxLayout, 
+                             QSizePolicy)
+from PyQt6.QtCore import QSize
 from librosa import load as librosa_load
 # from pretty_midi import Instrument
 
 from FileAnalysisHeader import FileAnalysisHeader
 from FigureWidget import FigureWidget
+from ParamDialog import ParamDialog
 from analysis import *
 
 
-class FileAnalysisWidget(QWidget):
+class FileAnalysis(QWidget):
     """Widget containing analysis of wav files, its figures and buttons to run them
     """
     def __init__(self, fpath: str, note_list: list, instru: pretty_midi.Instrument, app_size: tuple):
@@ -21,55 +22,58 @@ class FileAnalysisWidget(QWidget):
         self.note_list = note_list
         self.instru = instru
         self.app_size = app_size
-        self.init_var()
+        self.init_params()
 
-        self.header = FileAnalysisHeader(fname=self.fname, note=self.note_name, parent=self)
+        self.header = FileAnalysisHeader(fname=self.fname, note=self.params["note_name"], parent=self)
         self.main_box = QVBoxLayout()
         self.main_box.setContentsMargins(0, 0, 0, 0)
-        self.main_box.setSpacing(0)
+        self.main_box.setSpacing(5)
         self.main_box.addWidget(self.header, 0)
         
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-        self.setStyleSheet("FileAnalysisWidget {background-color: yellow}")
         self.setLayout(self.main_box)
         self.adjustSize()
-        # print(id(self), "FileAnalysisWidget size at init:", str(self.size()))
-
+    
 
     def sizeHint(self):
-        width = self.width()
+        width = 0
         height = 0
-        # print("FileAnalysisWidget children numbers", len(self.children()))
         for child in self.children():
             if not isinstance(child, QBoxLayout):
                 if child.width() > width:
                     width = child.width()
-                height = height + child.height()
-        print(id(self), "FileAnalysisWidget sizeHint :", width, height)
+                height = height + child.height() + 5
+        print(id(self), "FileAnalysis sizeHint :", width, height)
         return QSize(width, height)
     
-
-    def init_var(self):
+    
+    def init_params(self):
         print("file path : ", self.file_path)
         self.fname = self.file_path.split("/")[-1]
-        self.note_name, self.midi_note = get_note_guessed_from_fname(note_list=self.note_list, fname=self.fname)
-        print("Guessed note :", self.note_name)
-        ## Some user parameters 
-
-        self.duration_for_analysis = 60 # duration of each wav that is analyzed
-        self.filter_timescale = 80 # parameter for note segmentation : median filter lenght, the larger the smoother the signal envelop
-        self.threshold = 0.15 # parameter for note segmentation : energy level above which a note occurrence is detected
-        self.min_duration = 0.03 # parameter for note segmentation : minimal duration below which a note occurrence is discarded
+        note_name, midi_note = get_note_guessed_from_fname(note_list=self.note_list, fname=self.fname)
+        # print("Guessed note :", self.params["note_name"])
+        self.params = {
+            "note_name": note_name,
+            "midi_note": midi_note,
+            "duration_for_analysis": 60, # duration of each wav that is analyzed
+            "filter_timescale": 80, # parameter for note segmentation : median filter lenght, the larger the smoother the signal envelop
+            "threshold": 0.15, # parameter for note segmentation : energy level above which a note occurrence is detected
+            "min_note_duration": 0.03 # parameter for note segmentation : minimal duration below which a note occurrence is discarded
+        }
         self.fig_size: list = self.get_figure_size()
         self.is_analysis_done = False
     
     
     def generate_analysis(self):
         start = time()
-        self.y, self.sr = librosa_load(self.file_path, offset=0, duration=self.duration_for_analysis, sr=None)
+        self.y, self.sr = librosa_load(
+            self.file_path, 
+            offset=0, 
+            duration=self.params["duration_for_analysis"], 
+            sr=None)
         print("Duration of librosa.load() :", str(time()-start)) # long : 4 to 5 seconds when resampling
-        self.amplitude_envelope = get_amplitude_envelope(y=self.y, filter_timescale=self.filter_timescale)
-        self.decal = get_decal(y=self.y, amplitude_envelope=self.amplitude_envelope, threshold=self.threshold)
+        self.amplitude_envelope = get_amplitude_envelope(y=self.y, filter_timescale=self.params["filter_timescale"])
+        self.decal = get_decal(y=self.y, amplitude_envelope=self.amplitude_envelope, threshold=self.params["threshold"])
         self.is_analysis_done = True
         print("Duration of generate_analysis() :", str(time()-start))
 
@@ -89,13 +93,13 @@ class FileAnalysisWidget(QWidget):
         print("Duration of add_time_series_figure() :", str(time()-start))
         self.adjustSize()
         self.update()
-        print(id(self), "FileAnalysisWidget size :", str(self.size()))
+        print(id(self), "FileAnalysis size :", str(self.size()))
         
-        print("FileAnalysisWidget parent :", self.parent()) # MainContainer
+        print("FileAnalysis parent :", self.parent()) # MainContainer
         # print(id(self.parent()), type(self.parent()).__name__, "AnalysisWidget parent sizeHint:", str(self.parent().sizeHint()))
         self.parent().adjustSize()
         self.parent().update()
-        # print(id(self.parent()), type(self.parent()).__name__, "FileAnalysisWidget parent size :", str(self.parent().size()))
+        # print(id(self.parent()), type(self.parent()).__name__, "FileAnalysis parent size :", str(self.parent().size()))
         # self.figure_box.update()
 
     
@@ -105,11 +109,11 @@ class FileAnalysisWidget(QWidget):
             self.generate_analysis()
         fig = get_pitch_detection_fig(
             ampl_envel=self.amplitude_envelope, 
-            threshold=self.threshold, 
-            min_duration=self.min_duration, 
+            threshold=self.params["threshold"], 
+            min_duration=self.params["min_note_duration"], 
             # instru=self.instru, 
             decal=self.decal, 
-            # midi_note=self.midi_note, 
+            # midi_note=self.params["midi_note"], 
             sample_rate=self.sr
         )
         fig.set(figwidth=self.fig_size[0], figheight=self.fig_size[1]) # 10 = 1000px
@@ -121,7 +125,7 @@ class FileAnalysisWidget(QWidget):
         self.adjustSize()
         print(id(self), "AnalysisWidget size:", str(self.size()))
         
-        print("FileAnalysisWidget parent :", self.parent()) # MainContainer
+        print("FileAnalysis parent :", self.parent()) # MainContainer
         # print(id(self.parent()), "AnalysisWidget parent sizeHint:", str(self.parent().sizeHint()))
         self.parent().adjustSize()
         print(id(self.parent()), "AnalysisWidget parent size:", str(self.parent().size()))
@@ -133,13 +137,13 @@ class FileAnalysisWidget(QWidget):
     def add_notes_to_instru_from_decal(self):
         if not self.is_analysis_done:
             self.generate_analysis()
-            if self.midi_note != None:
+            if self.params["midi_note"] != None:
                 for start_ind, end_ind in zip(np.where(self.decal==1)[0], np.where(self.decal==-1)[0]):
-                    if (end_ind - start_ind)/self.sample_rate > self.min_duration:
+                    if (end_ind - start_ind)/self.sample_rate > self.params["min_note_duration"]:
                         # Create a Note instance for each note
                         note = pretty_midi.Note(
                             velocity=100, 
-                            pitch=round(self.midi_note), 
+                            pitch=round(self.params["midi_note"]), 
                             start=start_ind/self.sample_rate, 
                             end=end_ind/self.sample_rate
                         )
@@ -153,10 +157,28 @@ class FileAnalysisWidget(QWidget):
         app_width, app_height = self.app_size
         # app_width = 1579
         # app_height = 918
-        duration = self.duration_for_analysis
+        duration = self.params["duration_for_analysis"]
         fig_width = app_width / 30 * duration / 100 # Default width is 1 full width = 30 secs
         fig_height = app_height * 0.3 / 100 # Default height is 1/3 of app height. / 100 to convert to matplotlib's size
         fig_width = max(fig_width, app_width / 2 / 100) # half of window’s width as min
         fig_width = min(fig_width, 40) # 3400px max
         print("fig size is", fig_width, fig_height)
         return [fig_width, fig_height]
+
+
+    def delete_FileAnalysis(self):
+        print("delete_FileAnalysis called")
+    
+
+    def call_ParamDialog(self):
+        param_dialog = ParamDialog(self)
+        result_code = param_dialog.exec()
+        print("result code = ", result_code)
+        print("New params :")
+        for k, v in self.params.items():
+            print(k, v)
+
+
+    def store_new_params(self, new_params: dict):
+        print("store_new_params called")
+        self.params = new_params

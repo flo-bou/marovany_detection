@@ -16,6 +16,11 @@ llvmlite = "^0.39.0"
 
 [tool.poetry.dev-dependencies]
 
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^5.4.1"
+pip-search = "^0.0.12"
+python-dev-tools = "^2022.5.27"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

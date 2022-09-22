@@ -13,13 +13,7 @@ pypianoroll = "^1.0.4"
 pretty_midi = "^0.2.9"
 matplotlib = "^3.5.3"
 llvmlite = "^0.39.0"
-
-[tool.poetry.dev-dependencies]
-
-[tool.poetry.group.dev.dependencies]
-pyinstaller = "^5.4.1"
-pip-search = "^0.0.12"
-python-dev-tools = "^2022.5.27"
+pyinstaller = "5.3.*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

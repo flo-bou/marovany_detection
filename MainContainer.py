@@ -94,8 +94,8 @@ class MainContainer(QWidget):
     
     
     def generate_multitrack_midi_file_and_add_plot(self):
-        print(len(self.children())) # 15 (1 layout + 1 header + 13 analysis )
-        # add_notes_to_instru_from_decal() for each analisyswidget
+        print(len(self.children()))
+        # add_notes_to_midi_instrument() for each analisyswidget
         analysisWidgets = list(filter(
             lambda child: not (child is self.v_box or child is self.header_widget), 
             self.children()
@@ -104,7 +104,7 @@ class MainContainer(QWidget):
         for analysisWidget in analysisWidgets: # parcours des enfants des enfants ?
             if not analysisWidget.is_analysis_done:
                 analysisWidget.generate_analysis()
-            analysisWidget.add_notes_to_instru_from_decal()
+            analysisWidget.add_notes_to_midi_instrument()
         if self.main_dir_path[-1]!="/":
             self.main_dir_path = self.main_dir_path + "/"
         self.midi_fname = self.main_dir_path + "multitrack.mid"
@@ -184,3 +184,16 @@ class MainContainer(QWidget):
             app_size=self.app_size
         )
         self.v_box.addWidget(analysis_widget, 0) # + param ,0
+    
+    
+    def remove_FileAnalysis(self, fileAnalysis_id: int):
+        print("remove_FileAnalysis called")
+        for child in self.children():
+            if id(child)==fileAnalysis_id:
+                self.v_box.removeWidget(child)
+                child.deleteLater()
+                break
+        self.adjustSize()
+        self.update()
+        # self.parent().adjustSize()
+        # self.parent().update()

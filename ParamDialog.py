@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import (QLabel, QLineEdit, QPushButton,
                              QDialog,
                              QHBoxLayout, QGridLayout)
 from PyQt6.QtCore import Qt
+import pretty_midi
 
 
 class ParamDialog(QDialog):
@@ -71,15 +72,36 @@ class ParamDialog(QDialog):
     
 
     def param_changed(self):
-        # TODO : verify new values
+        # TODO : verify that new values are correct
+        # TODO : add midi_note param from note_name
         print("params changed called")
         self.params["note_name"] = self.note_name_input.text()
+        if self.params["note_name"] in self.params["note_list"]:
+            self.params["midi_note"] = pretty_midi.note_name_to_number(self.params["note_name"])
         self.params["duration_for_analysis"] = int(self.duration_for_analysis_input.text())
         self.params["filter_timescale"] = int(self.filter_timescale_input.text())
         self.params["threshold"] = float(self.threshold_input.text())
         self.params["min_note_duration"] = float(self.min_note_duration_input.text())
         # call a parent method to change its params values
         self.parent.store_new_params(self.params)
+
+    
+    def verify_note_proposition(self, note_name: str):
+        """Verify a note name proposal (by the user)
+
+        Args:
+            note_list (list[str]): List of possible notes as strings
+            note_name (str): name of note
+
+        Returns:
+            A tuple containing :
+                str : the note name
+                int or None : the note number in pretty_midi format or None if note_name was not in note_list
+        """
+        midi_note = None
+        if note_name in self.params["note_list"]:
+            midi_note = pretty_midi.note_name_to_number(note_name)
+        return note_name, midi_note
     
     # def note_name_changed(self):
     # verify values

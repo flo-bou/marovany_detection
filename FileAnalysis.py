@@ -55,6 +55,7 @@ class FileAnalysis(QWidget):
         self.params = {
             "note_name": note_name,
             "midi_note": midi_note,
+            "note_list": self.note_list,
             "duration_for_analysis": 60, # duration of each wav that is analyzed
             "filter_timescale": 80, # parameter for note segmentation : median filter lenght, the larger the smoother the signal envelop
             "threshold": 0.15, # parameter for note segmentation : energy level above which a note occurrence is detected
@@ -84,23 +85,15 @@ class FileAnalysis(QWidget):
             self.generate_analysis()
         fig = get_time_series_fig(y=self.y, samp_rate=self.sr)
         fig.set(figwidth=self.fig_size[0], figheight=self.fig_size[1]) # 10 = 1000px
-        self.time_series_figure_widget = FigureWidget(
-            figure=fig
-        )
-        self.figure = self.time_series_figure_widget
+        self.time_series_figure_widget = FigureWidget(parent=self, figure=fig)
+        # self.figure = self.time_series_figure_widget
         self.main_box.addWidget(self.time_series_figure_widget, 0)
         
         print("Duration of add_time_series_figure() :", str(time()-start))
         self.adjustSize()
         self.update()
-        print(id(self), "FileAnalysis size :", str(self.size()))
-        
-        print("FileAnalysis parent :", self.parent()) # MainContainer
-        # print(id(self.parent()), type(self.parent()).__name__, "AnalysisWidget parent sizeHint:", str(self.parent().sizeHint()))
         self.parent().adjustSize()
         self.parent().update()
-        # print(id(self.parent()), type(self.parent()).__name__, "FileAnalysis parent size :", str(self.parent().size()))
-        # self.figure_box.update()
 
     
     def add_played_string_detection_figure(self):
@@ -117,39 +110,45 @@ class FileAnalysis(QWidget):
             sample_rate=self.sr
         )
         fig.set(figwidth=self.fig_size[0], figheight=self.fig_size[1]) # 10 = 1000px
-        self.played_string_detection_figure_widget = FigureWidget( figure=fig)
+        self.played_string_detection_figure_widget = FigureWidget(parent=self, figure=fig)
         # if self.played_string_detection_figure_widget.parent() is not self.figure_box:
-        self.figure = self.played_string_detection_figure_widget
-        
-        print("Duration of add_time_series_figure() :", str(time()-start))
+        # self.figure = self.played_string_detection_figure_widget
+        self.main_box.addWidget(self.played_string_detection_figure_widget, 0)
+        print("Duration of add_played_string_detection_figure() :", str(time()-start))
         self.adjustSize()
-        print(id(self), "AnalysisWidget size:", str(self.size()))
-        
-        print("FileAnalysis parent :", self.parent()) # MainContainer
-        # print(id(self.parent()), "AnalysisWidget parent sizeHint:", str(self.parent().sizeHint()))
+        self.update()
         self.parent().adjustSize()
-        print(id(self.parent()), "AnalysisWidget parent size:", str(self.parent().size()))
-        
+        self.parent().update()
         # write_midi_file(banjo_MIDI, 'marovany.mid')
         # get_multitrack_plot("marovany.mid")
     
     
-    def add_notes_to_instru_from_decal(self):
+    def add_figures(self):
+        self.add_time_series_figure()
+        self.add_played_string_detection_figure()
+        self.adjustSize()
+        self.update()
+        self.parent().adjustSize()
+        self.parent().update()
+        self.add_notes_to_midi_instrument()
+
+
+    def add_notes_to_midi_instrument(self):
         if not self.is_analysis_done:
             self.generate_analysis()
-            if self.params["midi_note"] != None:
-                for start_ind, end_ind in zip(np.where(self.decal==1)[0], np.where(self.decal==-1)[0]):
-                    if (end_ind - start_ind)/self.sample_rate > self.params["min_note_duration"]:
-                        # Create a Note instance for each note
-                        note = pretty_midi.Note(
-                            velocity=100, 
-                            pitch=round(self.params["midi_note"]), 
-                            start=start_ind/self.sample_rate, 
-                            end=end_ind/self.sample_rate
-                        )
-                        self.instru.notes.append(note)
-            else:
-                print("ERROR : Note not identified. No note added to instrument")
+        if self.params["midi_note"] != None:
+            for start_ind, end_ind in zip(np.where(self.decal==1)[0], np.where(self.decal==-1)[0]):
+                if (end_ind - start_ind)/self.sr > self.params["min_note_duration"]:
+                    # Create a Note instance for each note
+                    note = pretty_midi.Note(
+                        velocity=100, 
+                        pitch=round(self.params["midi_note"]), 
+                        start=start_ind/self.sr, 
+                        end=end_ind/self.sr
+                    )
+                    self.instru.notes.append(note)
+        else:
+            print("ERROR : Note not identified. No note added to instrument")
     
     
     def get_figure_size(self):
@@ -166,19 +165,35 @@ class FileAnalysis(QWidget):
         return [fig_width, fig_height]
 
 
-    def delete_FileAnalysis(self):
-        print("delete_FileAnalysis called")
+    def remove_self(self):
+        self.parent().remove_FileAnalysis(fileAnalysis_id=id(self))
     
+    
+    def remove_FigureWidget(self, figure_id: int):
+        print("remove_FigureWidget called")
+        for child in self.children():
+            if id(child)==figure_id:
+                self.main_box.removeWidget(child)
+                child.deleteLater()
+                break
+        self.adjustSize()
+        self.update()
+        self.parent().adjustSize()
+        self.parent().update()
+
 
     def call_ParamDialog(self):
         param_dialog = ParamDialog(self)
         result_code = param_dialog.exec()
         print("result code = ", result_code)
-        print("New params :")
-        for k, v in self.params.items():
-            print(k, v)
+        if result_code==1:
+            print("New params :")
+            for k, v in self.params.items():
+                print(k, v)
 
 
     def store_new_params(self, new_params: dict):
+        # called by ParamDialog when params are changed by the user
         print("store_new_params called")
         self.params = new_params
+        self.is_analysis_done = False

@@ -54,21 +54,21 @@ display plot of midi conversion
 display plot of multitrack midi file : TODO
 export midi file (single and multitrack)
 display note corresponding to file and view when modified TODO 
-possibility to change note corresponding to file : DONE
-add midi processing button in header widget
-bug : midi_note value may be None DONE
-Link new params to new plots TODO
-Display note detection plots : TODO
+possibility to change note corresponding to file : done
+add midi processing button in header widget TODO
+bug : midi_note value may be None done
+Link new params to new plots : done
+Display note detection plots : done
 Functionnal Analyse all button
 
 V1 
 -------------------
 add widget on top to analyse all
-add params dialog widget
-add multiple versions of same plots
-delete plot
-manually add single file
-manually remove single file
+add params dialog widget DONE
+add multiple versions of same plots : done
+delete plot DONE
+manually add single file : done
+manually remove single file : done
 when multiple versions of same plot
 add wav file reader
 add midi file reader
@@ -76,7 +76,8 @@ File dialog starts at user dir folder
 when File dialog does not found wav : feedback message
 add log system
 trouver un nom
-dropdown option menu with possibilies to remove file/plots (by index) 
+dropdown option menu with possibilies to remove file/plots (by index)
+use QComboBox for FileWidget deletion
 
 ISSUES
 numba build
@@ -99,6 +100,7 @@ mac ERRORS
 unable to create basic accelarated opengl renderer.
 Now using the software opengl renderer. This will be slow
 ==> hardware openGL not accessed. So using software render (more ressources needed). Not enought memory ?
+for mac, try py2app instead of pyinstaller
 
 cannot find path ./libompo.dylib
 

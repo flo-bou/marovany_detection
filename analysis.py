@@ -11,13 +11,13 @@ from pypianoroll import read as pianorollread
 
 def create_note_list():
     note_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+    note_commas = ['#', 'b', '']
     note_numbers = range(10)
-    note_commas = ['#', '']
     note_names = []
     for nl in note_letters:
         for nn in note_numbers:
             for nc in note_commas:
-                note_names.append(nl + str(nn) + nc)
+                note_names.append(nl + nc + str(nn))
     return note_names
 
 
@@ -133,7 +133,7 @@ def get_pitch_detection_fig(
     return fig
 
 
-# def add_notes_to_instru_from_decal(
+# def add_notes_to_midi_instrument(
 #         instru: pretty_midi.Instrument, 
 #         min_duration: float, 
 #         decal: np.ndarray, 
@@ -151,6 +151,7 @@ def get_pitch_detection_fig(
 
 
 def get_multitrack_fig(fname: str, y: np.ndarray, samp_rate):
+    # TODO
     multitrack = pianorollread(fname)
     multitrack_plot: np.ndarray = multitrack.plot()
     print(multitrack_plot)

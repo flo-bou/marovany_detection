@@ -7,6 +7,7 @@ from PyQt6.QtCore import Qt, QSize
 import pretty_midi
 
 from FileAnalysis import FileAnalysis
+from FigureWidget import FigureWidget
 from analysis import *
 
 class MainContainer(QWidget):
@@ -19,7 +20,7 @@ class MainContainer(QWidget):
         self.note_list = create_note_list()
         self.main_dir_path = ""
         
-        self.header_widget = self.get_header_widget()
+        self.generate_header_widget()
         self.v_box = QVBoxLayout()
         self.v_box.addWidget(self.header_widget, 0)
         self.v_box.setContentsMargins(10, 0, 0, 0)
@@ -48,7 +49,7 @@ class MainContainer(QWidget):
         return QSize(width, height)
     
     
-    def get_header_widget(self):
+    def generate_header_widget(self):
         # TODO : keep that widget and add button for midi
         self.welcoming_label = QLabel("Use the menu buttons ‘File’ then ‘Import directory’ to start the analysis.")
         self.header_box = QHBoxLayout()
@@ -56,31 +57,29 @@ class MainContainer(QWidget):
         # self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
         self.header_box.setAlignment(Qt.AlignmentFlag.AlignLeft)
         
-        header_widget = QWidget()
+        self.header_widget = QWidget()
         # header_widget.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        header_widget.setLayout(self.header_box)
+        self.header_widget.setLayout(self.header_box)
         # generate_multitrack_midi_and_add_plot() -> btn
         # self.welcoming_widget.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
-        header_widget.adjustSize()
-        print(id(header_widget), "header_widget size:", header_widget.size())
-        return header_widget
+        self.header_widget.adjustSize()
+        print(id(self.header_widget), "header_widget size:", self.header_widget.size())
     
     
-    def update_header_widget(self):
+    def add_btn_to_header_widget(self):
         if not hasattr(self, 'midi_btn'):
             print("welcoming_widget deletion")
             self.header_box.removeWidget(self.welcoming_label)
             self.welcoming_label.deleteLater()
             # for child in self.header_box.children():
             #     child.deleteLater()
-            self.midi_btn = QPushButton("Generate multitrack midi")
-            self.midi_btn.clicked.connect(self.generate_multitrack_midi_file_and_add_plot)
-            self.analysis_btn = QPushButton("Analyze all")
-            self.analysis_btn.clicked.connect(self.add_plots_to_FileAnalysiss)
+            self.analysis_btn = QPushButton("Plot all")
+            self.analysis_btn.clicked.connect(self.add_plots_to_every_FileAnalysis)
+            self.midi_btn = QPushButton("Generate multitrack midi file")
+            self.midi_btn.clicked.connect(self.generate_multitrack_midi_file)
             
-            self.header_box.addWidget(self.midi_btn)
             self.header_box.addWidget(self.analysis_btn)
-            # self.header_box.adjustSize()
+            self.header_box.addWidget(self.midi_btn)
             self.header_widget.adjustSize()
             self.header_widget.update()
             # self.adjustSize()
@@ -88,28 +87,55 @@ class MainContainer(QWidget):
         else:
             print("midi btn already exists")
     
+
+    def add_midi_figure_to_header_widget(self):
+        # TODO
+        # read multitrack.midi to get datas
+        fig = get_multitrack_fig(
+            # fname=, 
+            # y=, 
+            sample_rate=self.sr
+        )
+        fig.set(figwidth=self.fig_size[0], figheight=self.fig_size[1]) # 10 = 1000px
+        self.multitrack_midi_figure = FigureWidget(parent=self, figure=fig)
+        # if self.played_string_detection_figure_widget.parent() is not self.figure_box:
+        # self.figure = self.played_string_detection_figure_widget
+        self.header_box.addWidget(self.multi_midi_plot) # ,0
+        self.header_widget.adjustSize()
+        self.header_widget.update()
+        self.adjustSize()
+        self.update()
     
-    def add_plots_to_FileAnalysiss(self):
-        pass
+    
+    def add_plots_to_every_FileAnalysis(self):
+        analysisWidgets = list(filter(
+            lambda child: not (child is self.v_box or child is self.header_widget), 
+            self.children()
+        ))
+        print("number of analysis widgets : ", len(analysisWidgets))
+        for aw in analysisWidgets:
+            aw.add_time_series_figure()
+            aw.add_played_string_detection_figure()
     
     
-    def generate_multitrack_midi_file_and_add_plot(self):
-        print(len(self.children()))
+    def generate_multitrack_midi_file(self):
         # add_notes_to_midi_instrument() for each analisyswidget
         analysisWidgets = list(filter(
             lambda child: not (child is self.v_box or child is self.header_widget), 
             self.children()
         ))
-        print(len(analysisWidgets))
-        for analysisWidget in analysisWidgets: # parcours des enfants des enfants ?
-            if not analysisWidget.is_analysis_done:
-                analysisWidget.generate_analysis()
-            analysisWidget.add_notes_to_midi_instrument()
+        print("number of analysis widgets : ", len(analysisWidgets))
+        for aw in analysisWidgets:
+            aw.add_notes_to_midi_instrument()
         if self.main_dir_path[-1]!="/":
             self.main_dir_path = self.main_dir_path + "/"
         self.midi_fname = self.main_dir_path + "multitrack.mid"
-        self.pmidi.write(self.midi_fname) # error
-        print("midi written")
+        try:
+            self.pmidi.write(self.midi_fname) # error
+            print("midi written")
+        except:
+            print("ERROR : midi not written")
+        # TODO then add figure of multitrack midi to header_box
         # self.midi_fig = get_multitrack_fig(fname=self.midi_fname, y=, samp_rate=)
     
     
@@ -170,7 +196,7 @@ class MainContainer(QWidget):
     
     
     def add_multiple_analysis_widget(self, file_paths: list):
-        self.update_header_widget()
+        self.add_btn_to_header_widget()
         for file_path in file_paths:
             self.add_single_analysis_widget(fpath=file_path)
         print(id(self), "main_container size:", str(self.size()))

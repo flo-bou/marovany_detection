@@ -148,7 +148,7 @@ class FileAnalysis(QWidget):
                     )
                     self.instru.notes.append(note)
         else:
-            print("ERROR : Note not identified. No note added to instrument")
+            print("ERROR : Note not identified. No note added to instrument for file:", self.fname)
     
     
     def get_figure_size(self):

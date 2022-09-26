@@ -78,6 +78,7 @@ add log system
 trouver un nom
 dropdown option menu with possibilies to remove file/plots (by index)
 use QComboBox for FileWidget deletion
+generate midi file for each wav file. Then use thoses midi files to generate the multitrack midi file. (user can modify (with program) the single track midi and use the result for the multitrack file)
 
 ISSUES
 numba build

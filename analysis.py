@@ -10,9 +10,9 @@ from pypianoroll import read as pianorollread
 
 
 def create_note_list():
-    note_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-    note_commas = ['#', 'b', '']
-    note_numbers = range(10)
+    note_letters = ['D', 'G']  # ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+    note_commas = ['']  # ['#', 'b', '']
+    note_numbers = list(reversed(range(1, 13)))
     note_names = []
     for nl in note_letters:
         for nn in note_numbers:

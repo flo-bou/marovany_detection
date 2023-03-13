@@ -1,5 +1,5 @@
 # Présentation
-***marovany-detection*** est une application de bureau permettant de reconstituer au format midi des captation faites cordes à corde sur une marovany.
+***marovany-detection*** est une application de bureau permettant de reconstituer au format midi des captations faites cordes à corde sur une marovany.
 
 # Téléchargement
 Les différentes versions compilées de l'application sont disponibles sur le dossier cloud suivant :
@@ -22,18 +22,13 @@ La version 0.2 a été réalisée sous Ubuntu 22 et ne devrait être compatible 
 
 # Fonctionnement
 ## Importer des fichiers
-Une fois l’application lancée, il faut y importer des fichiers wav captés sur la
-marovany.
+Une fois l’application lancée, il faut y importer des fichiers wav captés sur la marovany.
 Pour cela, utilisez le menu « File » puis sélectionnez l’une des options suivante :
-* « import a directory » : vous sélectionnez un dossier (et uniquement un
-dossier) qui contient directement des fichiers .wav. L’application va
-reconnaître les fichiers wav et proposer un widget d’analyse correspondant à
-chacun de ces fichiers.
-* « import a single file » : vous permet d’ajouter un unique fichier .wav.
-L’application va ajouter un widget d’analyse correspondant à ce fichier.
+* « import a directory » : vous sélectionnez un dossier (et uniquement un dossier) qui contient directement des fichiers .wav. L’application va reconnaître les fichiers wav et proposer un widget d’analyse pour chacun de ces fichiers.
+* « import a single file » : vous permet d’ajouter un unique fichier .wav. L’application va ajouter un widget d’analyse correspondant à ce fichier.
 
 ## Reconnaissance automatique des cordes
-L’application permet de reconnaître les notes des cordes d’après leur nom de fichier. Pour tirer profit de cette fonctionnalité, il suffit de mettre le nom de la note/corde dans le nom du fichier associé.
+L’application permet de reconnaître les notes des cordes d’après leur noms de fichier. Pour tirer profit de cette fonctionnalité, il suffit de mettre le nom de la note/corde dans le nom du fichier associé.
 Les noms de note reconnus sont de la forme : « B#3, G2, E0, Cb4 … ». Par exemple un fichier nommé « 15_D3_140789_345.wav » sera reconnu en tant que corde D3
 
 ## Paramètres
@@ -43,7 +38,7 @@ Les noms de note reconnus sont de la forme : « B#3, G2, E0, Cb4 … ». Par exe
 
 ***Filter timescale*** : paramètre utilisé pour la segmentation de note : longueur du filtre médian. Plus cette valeur est grande plus l’enveloppe du signal est lissée. La valeur par défaut est de 80.
 
-***Threshold*** : paramètre utilisé pour la détection de note : niveau d’énergie au-dessus duquel l’occurrence d’une note est détectée. Le plus cette valeur est grande, le moins d’événements/vibrations seront considérés comme des notes jouées. Ce paramètre est visible sous la forme d’une ligne horizontale en pointillée sur la figure de note tracking. La valeur par défaut est de 0.15.
+***Threshold*** : paramètre utilisé pour la détection de note : niveau d’énergie au-dessus duquel l’occurrence d’une note est détectée. Le plus cette valeur est grande, le moins d’événements/vibrations seront considérés comme des notes jouées. Ce paramètre est visible sous la forme d’une ligne horizontale en pointillée sur la figure de *note tracking*. La valeur par défaut est de 0.15.
 
 ***Minimum note duration*** : paramètre pour la segmentation de note : durée minimale en seconde sous laquelle un événement/une note n’est pas prise en compte. La valeur par défaut est de 0.03.
 

@@ -6,8 +6,8 @@ from PyQt6.QtWidgets import (QWidget, QSizePolicy, QFileDialog,
 from PyQt6.QtCore import Qt, QSize
 import pretty_midi
 
-from FileAnalysis import FileAnalysis
-from FigureWidget import FigureWidget
+from Widgets.FileAnalysis import FileAnalysis
+from Widgets.FigureWidget import FigureWidget
 from analysis import *
 
 class MainContainer(QWidget):

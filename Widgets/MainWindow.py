@@ -4,7 +4,7 @@ from os import scandir, listdir
 from PyQt6.QtWidgets import QScrollArea, QMainWindow, QFileDialog
 from PyQt6.QtCore import Qt
 
-from MainContainer import MainContainer
+from Widgets.MainContainer import MainContainer
 
 
 class MainWindow(QMainWindow):

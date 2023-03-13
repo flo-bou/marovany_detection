@@ -7,9 +7,9 @@ from PyQt6.QtCore import QSize
 from librosa import load as librosa_load
 # from pretty_midi import Instrument
 
-from FileAnalysisHeader import FileAnalysisHeader
-from FigureWidget import FigureWidget
-from ParamDialog import ParamDialog
+from Widgets.FileAnalysisHeader import FileAnalysisHeader
+from Widgets.FigureWidget import FigureWidget
+from Widgets.ParamDialog import ParamDialog
 from analysis import *
 
 

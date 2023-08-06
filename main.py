@@ -3,10 +3,10 @@ from time import time
 
 from PyQt6.QtWidgets import QApplication
 
-from Widgets.MainWindow import MainWindow
-
+from MainWindow import MainWindow
 
 if __name__ == '__main__':
+    print("start")
     start = time()
     app = QApplication(sys_argv)
     window = MainWindow()

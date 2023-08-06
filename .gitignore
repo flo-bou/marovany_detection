@@ -1,23 +1,23 @@
-
 # working files
 *.png
 *.jpg
-# *.ipynb
 *.mid
 *.wav
-notes.txt
-# poetry.lock
 
 # temp folders
 dist/
 build/
 imgs/
 __pycache__/
+
+# ide/tool folders
 .idea/
+.vscode/
 .ipynb_checkpoints/
 
-# old versions
-capteurs/
-analysis/
-pyQt_test/
-tk_version/
+# testing folders
+/capteurs/
+/analysis/
+/pyQt_test/
+
+/.notes

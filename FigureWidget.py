@@ -1,13 +1,11 @@
-# import random
-
 from PyQt6.QtWidgets import (QWidget, QPushButton, 
                             QVBoxLayout, QHBoxLayout,
                             QSizePolicy)
 from PyQt6.QtCore import Qt
 # from matplotlib.backends.qt_compat import QtWidgets
-from matplotlib.backends.backend_qtagg import FigureCanvas, FigureCanvasQTAgg, NavigationToolbar2QT
+from matplotlib.backends.backend_qtagg import (FigureCanvas, FigureCanvasQTAgg, NavigationToolbar2QT)
 import matplotlib.figure as fig
-# import matplotlib.pyplot as plt
+
 
 class FigureWidget(QWidget):
     """Generic figure widget. Made for several figure types.

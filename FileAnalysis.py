@@ -5,7 +5,8 @@ from PyQt6.QtWidgets import (QWidget, QBoxLayout, QVBoxLayout,
 from PyQt6.QtCore import QSize
 from matplotlib.widgets import Cursor
 import sounddevice as sd
-from scipy.io import wavfile
+import librosa
+# from scipy.io import wavfile
 # from pretty_midi import Instrument
 
 from ParamDialog import ParamDialog
@@ -121,8 +122,8 @@ class FileAnalysis(QWidget):
     def generate_analysis(self):
         start = time()
         self.audio_load=True
-        self.sr, self.audio = wavfile.read(self.file_path)
-        # self.audio,self.sr =librosa.load(self.file_path, sr=None)
+        # self.sr, self.audio = wavfile.read(self.file_path)
+        self.audio, self.sr = librosa.load(self.file_path, sr=None)
         self.audio =np.real(Denoise(self.audio,self.sr))
 
         #Normaliser l'audio 
@@ -368,8 +369,8 @@ class FileAnalysis(QWidget):
   
     #---------Add Menu------#
     def play_audio(self):
-        sr, y = wavfile.read(self.file_path)
-        # y, sr = librosa.load(self.file_path, sr=None)
+        # sr, y = wavfile.read(self.file_path)
+        y, sr = librosa.load(self.file_path, sr=None)
         sd.play(y, sr)
 
     def Add_Note(self, event):
@@ -622,8 +623,8 @@ class FileAnalysis(QWidget):
         self.onsets = aw_data.get("onsets", [])
         self.offsets = aw_data.get("offsets", [])
         self.file_path=aw_data.get("file_path",None)
-        # self.audio,self.sr=librosa.load(self.file_path, sr=None)
-        self.sr, self.audio = wavfile.read(self.file_path)
+        self.audio,self.sr = librosa.load(self.file_path, sr=None)
+        # self.sr, self.audio = wavfile.read(self.file_path)
         self.amplitude_envelope = np.array(aw_data.get("amplitude_envelope",0))
         print('len ampli env',len(self.amplitude_envelope))
         print('type: ',type(self.amplitude_envelope))

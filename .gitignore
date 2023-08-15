@@ -9,6 +9,7 @@ dist/
 build/
 imgs/
 __pycache__/
+*.spec
 
 # ide/tool folders
 .idea/

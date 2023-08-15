@@ -1,10 +1,11 @@
 import numpy as np
-import librosa.display
+# import librosa.display
 import librosa
 import scipy.signal as sig
-from scipy.io import wavfile
+import librosa
+# from scipy.io import wavfile
 import matplotlib.pyplot as plt
-from IPython.display import display, Audio
+# from IPython.display import display, Audio
 from scipy.signal import hilbert
 from scipy.ndimage import median_filter
 import torch
@@ -143,7 +144,7 @@ def get_pitch(y, fs,pitch_min=100,pitch_max=1000):
   #Générez un signal sinusoïdal basé sur les pitches détectés
   y_p = np.sin(2 * π * (np.cumsum(f / fs) % 1.0))[:len(y)]
 
-  display(Audio(y_p,rate=fs))
+  # display(Audio(y_p,rate=fs)) # removed during ipython deletion
 
   freqs=p.numpy()#conversion de tenseur pytorch vers numpy
 
@@ -300,14 +301,15 @@ def most_frequent_note(notes):
     return note_plus_frequente
 
 
-def get_equivalence_table(file_path,equivalence_table):
+def get_equivalence_table(file_path, equivalence_table):
 
     if file_path[0]=='0':
       num_corde=int(file_path[1])
     else :
       num_corde=int(file_path[:2])
 
-    fs, y = wavfile.read(file_path)
+    y, fs = librosa.load(file_path, sr=None)
+    # fs, y = wavfile.read(file_path)
 
     pitchs=get_pitch(y, fs)
     print(pitchs)

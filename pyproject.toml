@@ -15,11 +15,10 @@ matplotlib = "~3.6.3"
 llvmlite = "~0.39.0"
 pyinstaller = "5.3"
 pandas = "~2.0.3"
-ipython = "~8.12.2"
 torch = "~2.0.1"
 torch-yin = "^0.1.3"
 sounddevice = "~0.4.6"
-scipy = "~1.10.1"
+scipy = "~1.9.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

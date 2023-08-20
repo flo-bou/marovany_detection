@@ -1,25 +1,26 @@
-# dl les sources sur github
-Invoke-WebRequest https://github.com/flo-bou/marovany_detection/archive/change-dependancies.zip # -OutFile .\plinqo.zip
-# écraser les fichiers
+# download source files
+Invoke-WebRequest https://github.com/flo-bou/marovany_detection/archive/change-dependancies.zip -OutFile .\change-dependancies.zip
+
+# set up folder
 Expand-Archive .\change-dependancies.zip .\
-# Rename-Item .\plinqo-main .\plinqo
+Rename-Item .\marovany_detection-change-dependancies .\marovany_detection
 Remove-Item .\change-dependancies.zip
+cd .\marovany_detection
 
-# vérifier la version de python
+# TODO verify python version
 
-# créer un environnement virtuel (vérifier que venv est présent)
+# create virtual env
 python -m venv .venv
 
-# python -m pip install --upgrade pip
-
-# activer l'environnement virtuel
+# activate virtual env
 . .venv\Scripts\activate
 
-# vérifier que pip est installé
+# verify pip availability
+# python -m ensurepip --upgrade
 
-# installer les dépendances (selon la version de python)
+# install dependancies
 python -m pip install -r requirements.txt
+echo "Installation successful."
 
+# deactivate virtual env
 deactivate
-
-echo "Installation successful. You can now close that window."

@@ -1,15 +1,26 @@
-# dl les sources sur github
+# download source files
+curl -LO https://github.com/flo-bou/marovany_detection/archive/change-dependancies.zip
 
-# vérifier la version de python
-# créer un environnement virtuel
+# set up folder
+unzip change-dependancies.zip
+mv ./marovany_detection-change-dependancies ./marovany_detection
+rm change-dependancies.zip
+cd ./marovany_detection
+
+# TODO verify python version
+
+# create virtual env
 python3 -m venv .venv
 
-# activer l'environnement virtuel
+# activate virtual env
 source .venv/bin/activate
 
-# vérifier que pip est installé
+# verify pip availability
+# python -m ensurepip --upgrade
 
-# installer les dépendances (selon la version de python)
+# install dependancies
 python3 -m pip install -r requirements.txt
+echo "Installation successful."
 
+# deactivate virtual env
 deactivate

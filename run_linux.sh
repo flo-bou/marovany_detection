@@ -1,7 +1,10 @@
-# lancer l'application
+# run virtual env
 source .venv/bin/activate
 
-# lancer l'application
+# run application
+echo "Launching application"
 python3 main.py
 
-# à la fermeture désactiver l'environnement virtuel
+# shut down virtual env
+echo "Application shut down"
+deactivate

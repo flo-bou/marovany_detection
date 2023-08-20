@@ -10,6 +10,8 @@ build/
 imgs/
 __pycache__/
 *.spec
+.env/
+.venv/
 
 # ide/tool folders
 .idea/

@@ -5,7 +5,7 @@ import scipy.signal as sig
 import librosa
 # from scipy.io import wavfile
 import matplotlib.pyplot as plt
-# from IPython.display import display, Audio
+from IPython.display import display, Audio
 from scipy.signal import hilbert
 from scipy.ndimage import median_filter
 import torch
@@ -144,7 +144,7 @@ def get_pitch(y, fs,pitch_min=100,pitch_max=1000):
   #Générez un signal sinusoïdal basé sur les pitches détectés
   y_p = np.sin(2 * π * (np.cumsum(f / fs) % 1.0))[:len(y)]
 
-  # display(Audio(y_p,rate=fs)) # removed during ipython deletion
+  display(Audio(y_p,rate=fs)) # removed during ipython deletion
 
   freqs=p.numpy()#conversion de tenseur pytorch vers numpy
 

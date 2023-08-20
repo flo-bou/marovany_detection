@@ -12,7 +12,7 @@ import librosa
 from ParamDialog import ParamDialog
 from FigureWidget import FigureWidget
 from FileAnalysisHeader import FileAnalysisHeader
-from analysis import *
+from old.analysis import *
 from Fonctions import * 
 
 
@@ -194,7 +194,7 @@ class FileAnalysis(QWidget):
             self.onsets_lines.remove()
         if self.offsets_lines is not None:
             self.offsets_lines.remove()
-        if self.threshold_on_lines is not None:
+        if self.threshold_on_lines != None:
             self.threshold_on_lines.remove()
         if self.threshold_off_lines is not None:
             self.threshold_off_lines.remove()
@@ -280,11 +280,11 @@ class FileAnalysis(QWidget):
         fig_height = app_height * 0.4 / 100 # Default height is 1/3 of app height. / 100 to convert to matplotlib's size
         fig_width = max(fig_width, app_width / 2 / 100) # half of window’s width as min
         fig_width = min(fig_width, 40) # 3400px max
-       
+        
         return [fig_width, fig_height] 
 
 
-   #------Midi-----#
+    #------Midi-----#
     def add_notes_to_midi_instrument(self):
         if not self.is_analysis_done:
             self.generate_analysis()
@@ -409,8 +409,9 @@ class FileAnalysis(QWidget):
         self.onset_edit=True
         self.header.Finish_btn.setVisible(True)
         if self.cursor_onset==None:
-         self.cursor_onset = Cursor(self.ax,horizOn=False,vertOn=True,color='grey',label="cursor offsets",linewidth=2.0)
+            self.cursor_onset = Cursor(self.ax,horizOn=False,vertOn=True,color='grey',label="cursor offsets",linewidth=2.0)
         self.fig.canvas.mpl_connect('button_release_event',self.Edit_Onsets)
+    
     
     def Edit_Offsets_Cursor(self):
         self.offset_edit=True
@@ -420,7 +421,7 @@ class FileAnalysis(QWidget):
         self.fig.canvas.mpl_connect('button_release_event',self.Edit_Offsets)
     
     #---------Edit Menu--------#
-    def Edit_Onsets(self,event):
+    def Edit_Onsets(self, event):
        if not self.finish and self.onset_edit:
         if len(self.onsets)!=0 and self.xdata is not None and not self.offset_edit and not self.Add_note_edit:
             onsets = np.asarray(self.onsets)
@@ -428,7 +429,7 @@ class FileAnalysis(QWidget):
             if self.onset_initial is None:
                 print("aaa",self.onsets[idx])
                 self.onset_initial=self.onsets[idx]
-            else : 
+            else:
                 self.onset_initial=None
                 onset_final=self.xdata
                 self.onsets[idx]=onset_final
@@ -450,7 +451,7 @@ class FileAnalysis(QWidget):
             if self.offset_initial is None:
                 print("ooo",self.offsets[idx])
                 self.offset_initial=self.offsets[idx]
-            else : 
+            else:
                 self.offset_initial=None
                 offset_final=self.xdata
                 self.offsets[idx]=offset_final

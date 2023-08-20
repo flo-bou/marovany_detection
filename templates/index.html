@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marovany</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'style.css') }}">
+    <script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/hover.min.js"></script>
+    <!-- <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script> -->
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+    <header>
+        <div class="bg-stone-100 py-3 text-center flex justify-around">
+            <h1 class="text-xl">Title</h1>
+            <p class="text-stone-500 text-sm">Description.</p>
+        </div>
+
+        <div class="container mx-auto flex py-2">
+
+            <!-- File menu -->
+            <div class="relative inline-block mr-2">
+                <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1" onclick="toggleList('file-dropdown');">
+                    File &#11206;
+                </button>
+                <div id="file-dropdown" class="hidden absolute left-0 border rounded solid border-stone-800 text-stone-800">
+                    <div class="flex flex-col divide-y divide-solid bg-white w-48 rounded">
+                        <button type="button" class=" p-1 text-left" onclick="call_import_dir();">Import a directory</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_import_file();">Import a single file</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_save_project();">Save project</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative inline-block mr-2">
+                <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1" onclick="toggleList('excel-dropdown');">
+                    Save to excel &#11206;
+                </button>
+                <div id="excel-dropdown" class="hidden absolute left-0 border rounded solid border-stone-800 text-stone-800">
+                    <div class="flex flex-col divide-y divide-solid bg-white w-48 rounded">
+                        <button type="button" class=" p-1 text-left" onclick="call_call_ChooseFileDialog_save_file();">Choose file</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_save_notes();">Save All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project menu -->
+            <button type="button" class="border rounded border-solid border-stone-800 text-stone-800 p-1 text-left mr-2" onclick="call_load_project();">Open Project</button>
+
+            <!-- Edit menu -->
+            <div class="relative inline-block mr-2">
+                <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1" onclick="toggleList('edit-dropdown');">
+                    Edit &#11206;
+                </button>
+                <div id="edit-dropdown" class="hidden absolute left-0 border rounded solid border-stone-800 text-stone-800">
+                    <div class="flex flex-col divide-y divide-solid bg-white w-48 rounded">
+                        <button type="button" class=" p-1 text-left" onclick="call_call_ChooseFileDialog_Edit();">Edit Note > Choose file</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_Note_edition();">Edit Note > All files</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_call_ChooseFileDialog_Delete();">Delete Note > Choose file</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_Delete_Note();">Delete Note > All files</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add menu -->
+            <div class="relative inline-block mr-2">
+                <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1" onclick="toggleList('add-dropdown');">
+                    Add &#11206;
+                </button>
+                <div id="add-dropdown" class="hidden absolute left-0 border rounded solid border-stone-800 text-stone-800">
+                    <div class="flex flex-col divide-y divide-solid bg-white w-48 rounded">
+                        <button type="button" class=" p-1 text-left" onclick="call_call_ChooseFileDialog_Add_audio();">Add audio player > Choose file</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_Add_audio_player();">Add audio player > All files</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_call_ChooseFileDialog_Add();">Add Note > Choose file</button>
+                        <button type="button" class=" p-1 text-left" onclick="call_Add_Note();">Add Note > All files</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="container mx-auto">
+
+        <!-- <template id="template-file"> -->
+            <section id="">
+                <div class="flex justify-between py-2">
+                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1" onclick="includeFile()">Button</button>
+                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1">Button 2</button>
+                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1">Button 3</button>
+                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1">Button 4</button>
+                </div>
+        
+                <div class="bg-stone-300 h-48">
+                </div>
+
+                <div id="waveform">
+
+                </div>
+        
+                <div class="flex justify-between py-2">
+                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1">Button 5</button>
+                    <span class="filename text-stone-800 p-1">File name</span>
+                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1">Button 6</button>
+                </div>
+            </section>
+            <!-- <input type="file" onchange="sendPath(this);"> -->
+        <!-- </template> -->
+    </main>
+
+    <footer class="text-stone-500 font-light bg-stone-100">
+        <div class="flex justify-around p-3">
+            <p>Footer</p> 
+            <a href="" target="_blank">
+                Link
+            </a>
+        </div>
+    </footer>
+</body>
+
+<script src="{{ url_for('static', filename = 'script.js') }}"></script>
+</html>

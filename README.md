@@ -20,7 +20,21 @@ Elle a été réalisée sous macOS 10.15 et ne fonctionnera probablement pas sou
 Pour lancer l’application, double-cliquez sur le fichier « marovany ».
 La version 0.2 a été réalisée sous Ubuntu 22 et ne devrait être compatible qu'avec des versions récentes de Linux.
 
+# Installation
+
+Install dependancies :
+```sh
+pip install -r requirements.txt
+```
+
 # Fonctionnement
+
+Run dev environmement :
+```sh
+source .env/Scripts/activate
+python -m flask run --debug
+```
+
 ## Importer des fichiers
 Une fois l’application lancée, il faut y importer des fichiers wav captés sur la marovany.
 Pour cela, utilisez le menu « File » puis sélectionnez l’une des options suivante :

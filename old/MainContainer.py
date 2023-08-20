@@ -11,7 +11,7 @@ import pandas as pd
 from ChooseFileDialog import ChooseFileDialog
 from FileAnalysis import FileAnalysis
 from FigureWidget import FigureWidget
-from analysis import *
+from old.analysis import *
 from Fonctions import *
 
 class MainContainer(QWidget):
@@ -50,18 +50,6 @@ class MainContainer(QWidget):
         self.edit_note=False
         self.add_audio=False
         self.save=False
-
-    def sizeHint(self):
-        print("sizeHint MainContainer")
-        width = self.width()
-        height = 0
-        for child in self.children():
-            if not isinstance(child, QBoxLayout):
-                if child.width() > width:
-                    width = child.width()
-                height = height + child.height() + 10
-        print(id(self), "MainContainer sizeHint :", width, height)
-        return QSize(width, height)
     
     #------Widgets----------#
     def generate_header_widget(self):

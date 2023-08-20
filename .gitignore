@@ -8,17 +8,22 @@
 dist/
 build/
 imgs/
+*.pyc
 __pycache__/
 *.spec
+*.egg-info/
 
 # ide/tool folders
 .idea/
 .vscode/
 .ipynb_checkpoints/
+.venv/
+.env/
 
 # testing folders
 /capteurs/
 /analysis/
-/pyQt_test/
-
+.pytest_cache/
+.coverage
+htmlcov/
 /.notes

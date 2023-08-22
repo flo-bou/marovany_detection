@@ -10,3 +10,5 @@ python3 main.py
 # shut down virtual env
 echo "Application shut down"
 deactivate
+
+echo "You can now close this terminal"

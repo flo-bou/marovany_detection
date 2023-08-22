@@ -1,4 +1,8 @@
-#!bin/bash
+#!/bin/bash
+
+# select installation location
+cd ~/Applications || mkdir ~/Applications
+cd ~/Applications
 
 # download source files
 curl -LO https://github.com/flo-bou/marovany_detection/archive/change-dependancies.zip

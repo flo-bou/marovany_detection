@@ -16,6 +16,17 @@ suspendre l'antivirus.
 Pour lancer l’application, ouvrez (cmd + O) le fichier « marovany ».
 Elle a été réalisée sous macOS 10.15 et ne fonctionnera probablement pas sous les versions plus anciennes de macOS.
 
+
+Pour l'installation
+```sh
+chmod -v +x install_macos.command
+```
+
+Pour le lancement
+```sh
+chmod -v +x ~/Applications/marovany_detection/run_macos.command
+```
+
 ## Linux
 Pour lancer l’application, double-cliquez sur le fichier « marovany ».
 La version 0.2 a été réalisée sous Ubuntu 22 et ne devrait être compatible qu'avec des versions récentes de Linux.

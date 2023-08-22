@@ -1,13 +1,4 @@
-#!bin/bash
-
-# download source files
-curl -LO https://github.com/flo-bou/marovany_detection/archive/change-dependancies.zip
-
-# set up folder
-unzip change-dependancies.zip
-mv ./marovany_detection-change-dependancies ./marovany_detection
-rm change-dependancies.zip
-cd ./marovany_detection
+#!/bin/bash
 
 # TODO verify python version
 
@@ -21,10 +12,13 @@ source .venv/bin/activate
 # python -m ensurepip --upgrade
 
 # install dependancies
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r ./install/requirements.txt
 
 # deactivate virtual env
 deactivate
+
+# make the run script usable from finder
+chmod -v +x run_macos.command
 
 # end message
 echo ""

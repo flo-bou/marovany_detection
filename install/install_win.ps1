@@ -1,5 +1,5 @@
 
-# TODO verify python version
+# check python environment
 
 # create virtual env
 python -m venv .venv

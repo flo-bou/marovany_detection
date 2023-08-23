@@ -1,6 +1,8 @@
 #!bin/bash
 
-# TODO verify python version
+# check python environment
+# sudo apt install python3-venv
+# python3 -m ensurepip --upgrade
 
 # create virtual env
 echo "Creating virtual environment..."
@@ -9,9 +11,6 @@ echo "Virtual environment created."
 
 # activate virtual env
 source .venv/bin/activate
-
-# verify pip availability
-# python -m ensurepip --upgrade
 
 # install dependancies
 echo "Installing dependancies..."
@@ -22,8 +21,8 @@ echo "Dependancies succefully installed."
 deactivate
 
 # make the run script usable from file explorer
-cat run.sh > ../RUN_APP.sh
-chmod -v +x ../RUN_APP.sh
+cat install/run.sh > RUN_APP.sh
+chmod -v +x RUN_APP.sh
 
 # end message
 echo ""

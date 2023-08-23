@@ -6,9 +6,9 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QPushButton,
 from PyQt6.QtCore import (Qt, QUrl, QTimer, 
                           QTime)
 from PyQt6.QtGui import QIcon
-from PyQt5.QtMultimedia import QMediaPlayer
+from PyQt6.QtMultimedia import QMediaPlayer
 import librosa
-from scipy.io import wavfile
+# from scipy.io import wavfile
 import sounddevice as sd
 
 
@@ -80,8 +80,8 @@ class AudioPlayer(QWidget):
     def playAudioFile(self):
         if not self.player.isAvailable():
             full_file_path = os.path.join(os.getcwd(),self.file_path)
-            # y, sr = librosa.load(full_file_path, sr=None)
-            sr, y = wavfile.read(self.file_path)
+            y, sr = librosa.load(full_file_path, sr=None)
+            # sr, y = wavfile.read(self.file_path)
             sd.play(y, sr)
             sd.wait()
 

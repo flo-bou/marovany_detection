@@ -1,0 +1,15 @@
+# Environement setup :
+# step 1 : install poetry
+# step 2.1 : install pyenv 
+# step 2.2 : install the python version specified in the .python-version file
+# step 3 : install project dependancies avec la bonne version de python
+# pyenv exec poetry install
+
+# this project requires numba 
+# numba require setuptools<60, so be carefull about the setuptools version
+# you can specify the setuptools version with the followinf command :
+# poetry run pip install setuptools==59.* --upgrade
+
+# build the app using the following command
+# pyenv exec poetry run pyinstaller --windowed --name marovany --collect-data librosa main.py
+pyenv exec poetry run pyinstaller --windowed --name marovany main.py

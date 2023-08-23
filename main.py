@@ -6,7 +6,6 @@ from PyQt6.QtWidgets import QApplication
 from MainWindow import MainWindow
 
 if __name__ == '__main__':
-    print("start")
     start = time()
     app = QApplication(sys_argv)
     window = MainWindow()

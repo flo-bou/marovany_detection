@@ -1,5 +1,0 @@
-# numba require setuptools<60, so enter the following command :
-# poetry run pip install setuptools==59.* --upgrade
-
-# build the app using the following command
-poetry run pyinstaller --windowed --name marovany --collect-data librosa main.py

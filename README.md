@@ -6,7 +6,7 @@
 
 1. To fetch the source files, go to the [Github page](https://github.com/flo-bou/marovany_detection) and push the green button named "Code" then "Download Zip".
 2. Put the zip file wherever you want to install the app. Unzip.
-3. Open the terminal (Launchpad > search "Terminal" on macOS)
+3. Open the terminal (Launchpad > search "Terminal" on macOS ; Windows key > search "Powershell" on Windows)
 4. In the terminal, go inside the folder you just unziped.
 5. Run the installation script according to you OS:
     * for macOS, type <code>source install/install_macos.sh</code>
@@ -18,7 +18,7 @@
 # Run
 
 To run the application :
-* on macOS, double-clic on the <code>RUN_APP.command</code> file 
+* on macOS (version 11 at least), double-clic on the <code>RUN_APP.command</code> file 
 * on Linux, double-clic on the <code>RUN_APP.sh</code> file 
 * on Windows, double-clic on the <code>RUN_APP.ps1</code> file 
 

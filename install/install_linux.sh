@@ -3,6 +3,7 @@
 # check python environment
 # sudo apt install python3-venv
 # python3 -m ensurepip --upgrade
+# sudo apt-get install libportaudio2 # required for sounddevice
 
 # create virtual env
 echo "Creating virtual environment..."
@@ -22,7 +23,7 @@ deactivate
 
 # make the run script usable from file explorer
 cat install/run.sh > RUN_APP.sh
-chmod -v +x RUN_APP.sh
+chmod +x RUN_APP.sh
 
 # end message
 echo ""

@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Get script folder location
-# INSTALL_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-INSTALL_DIR=$(dirname "$(readlink -f "$0")")
+INSTALL_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $INSTALL_DIR
 
 # run virtual env

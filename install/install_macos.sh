@@ -22,7 +22,7 @@ deactivate
 
 # make the run script usable from finder
 cat install/run.sh > RUN_APP.command
-chmod -v +x RUN_APP.command
+chmod +x RUN_APP.command
 
 # end message
 echo ""

@@ -3,7 +3,7 @@
 # check python environment
 # sudo apt install python3-venv
 # python3 -m ensurepip --upgrade
-# sudo apt-get install libportaudio2 # required for sounddevice
+# sudo apt-get install libportaudio2 # required by sounddevice module
 
 # create virtual env
 echo "Creating virtual environment..."

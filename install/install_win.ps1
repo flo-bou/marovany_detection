@@ -19,7 +19,7 @@ echo "Dependancies succefully installed."
 deactivate
 
 # make the run script usable from file explorer
-cat install/run_win.sh > RUN_APP.ps1
+cat install/run_win.ps1 > RUN_APP.ps1
 # chmod -v +x RUN_APP.sh
 
 # end message

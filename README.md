@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 Run dev environmement :
 ```sh
-source .env/Scripts/activate
+source .venv/Scripts/activate
 python -m flask run --debug
 ```
 

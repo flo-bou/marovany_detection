@@ -1,14 +1,13 @@
 
 /**
- * Prépare une requête GET qui renvoie un json
- * Endpoints available : "/files_list"
+ * Prepares a GET request that returns json data
  *
  * @param {string} [path=""]
  * @param {string} [params=""]
- * @return {Promise} 
+ * @return {Promise|void} 
  */
 function request_data(path="", params=""){
-    let iniObj = {	
+    let initObj = {	
         method: 'GET',
         headers: { 
             'Accept': 'application/json',
@@ -16,25 +15,18 @@ function request_data(path="", params=""){
         },
     };
 
-    let promiseOut = fetch( "http://127.0.0.1:5000"+path+params, iniObj )
+    const promiseOut = fetch( "http://127.0.0.1:5000"+path+params, initObj )
     .then( response => {
-        console.log("Request of "+path+params);
         if (response.ok){
             return response.json();
         } else{
-            console.error(response.status, response.statusText)
+            console.error("Bad response from server during the GET request to : "+path+params);
+            console.error(response.status, response.statusText);
         }
     })
     .catch( err => { 
-        console.log("login rejected : ", err);
-        // Checking if this is an HTTP error
-        if (err.status && err.response) {
-            if (err.status === 401) {
-                err.message = 'Access denied'
-            }
-        } else {
-            throw err
-        }
+        console.error("An error occured during the GET request to : "+path+params);
+        console.error(err);
     })
 
     return promiseOut;
@@ -42,41 +34,35 @@ function request_data(path="", params=""){
 
 
 /**
- * Prépare une requête GET qui renvoie du texte
- * Endpoints available : "/", "/test"
+ * Prepares a POST request.
  *
  * @param {string} [path=""]
  * @param {string} [params=""]
- * @return {Promise} 
+ * @return {Promise|void} 
  */
-function request_text(path="", params=""){
-    let iniObj = {	
-        method: 'GET',
+function send_data(path="", data=""){
+    const initObj = {	
+        method: 'POST',
         headers: { 
+            'Content-Type': 'application/json',
             'Accept': '*/*',
             'Referer': 'origin'
         },
+        body: data
     };
 
-    let promiseOut = fetch( "http://127.0.0.1:5000"+path+params, iniObj )
+    const promiseOut = fetch( "http://127.0.0.1:5000"+path, initObj )
     .then( response => {
-        console.log("Request of "+path+params);
         if (response.ok){
             return response.text();
         } else{
+            console.error("Bad response from server during the POST request to : "+path+params);
             console.error(response.status, response.statusText)
         }
     })
     .catch( err => { 
-        console.log("login rejected : ", err);
-        // Checking if this is an HTTP error
-        if (err.status && err.response) {
-            if (err.status === 401) {
-                err.message = 'Access denied'
-            }
-        } else {
-            throw err
-        }
+        console.error("An error occured during the POST request to : "+path+params);
+        console.error(err);
     })
 
     return promiseOut;
@@ -84,15 +70,14 @@ function request_text(path="", params=""){
 
 
 /**
- * Prépare une requête GET qui renvoie un blob
- * Endpoints available : "/file?name={{name}}"
+ * Prepares a GET request that returns a blob
  *
  * @param {string} [path=""]
  * @param {string} [params=""]
- * @return {Promise} 
+ * @return {Promise|void} 
  */
-function request_path(path="", params=""){
-    let iniObj = {	
+function request_blob(path="", params=""){
+    let initObj = {	
         method: 'GET',
         headers: { 
             'Accept': '*/*',
@@ -100,25 +85,18 @@ function request_path(path="", params=""){
         },
     };
 
-    let promiseOut = fetch( "http://127.0.0.1:5000"+path+params, iniObj )
+    const promiseOut = fetch( "http://127.0.0.1:5000"+path+params, initObj )
     .then( response => {
-        console.log("Request of "+path+params);
         if (response.ok){
             return response.blob();
         } else{
+            console.error("Bad response from server during the GET request to : "+path+params);
             console.error(response.status, response.statusText)
         }
     })
     .catch( err => { 
-        console.log("login rejected : ", err);
-        // Checking if this is an HTTP error
-        if (err.status && err.response) {
-            if (err.status === 401) {
-                err.message = 'Access denied'
-            }
-        } else {
-            throw err
-        }
+        console.error("An error occured during the GET request to : "+path+params);
+        console.error(err);
     })
 
     return promiseOut;

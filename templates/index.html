@@ -6,10 +6,13 @@
     <title>Marovany</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'style.css') }}">
-    <script src="https://unpkg.com/wavesurfer.js@7"></script>
-    <!-- <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/minimap.min.js"></script> -->
-    <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/timeline.min.js"></script>
-    <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
+    <!-- <script src="https://unpkg.com/wavesurfer.js@7"></script> -->
+    <!-- <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/timeline.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script> -->
+    <script src="{{ url_for('static', filename = 'vendors/wavesurfer.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendors/wavesurfer.timeline.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendors/wavesurfer.regions.min.js') }}"></script>
+
 </head>
 <body class="min-h-screen flex flex-col justify-between">
     <header>
@@ -33,7 +36,7 @@
             </span>
             <span>
                 <label for="open-project" class="p-1 text-stone-800 disabled:text-stone-500">Project directory : </label>
-                <input type="text" id="project-directory" placeholder="/home/john/Documents/audio project/" class="border rounded solid border-stone-800 text-stone-800 p-1 disabled:border-stone-500 disabled:text-stone-500 disabled:cursor-not-allowed" size="35">
+                <input type="text" id="project-directory" placeholder="/home/john/Documents/audio project/" class="border rounded solid border-stone-800 text-stone-800 p-1 disabled:border-stone-500 disabled:text-stone-500 disabled:cursor-not-allowed" size="35" >
                 <button id="project-directory-input" type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert disabled:border-stone-500 disabled:text-stone-500 disabled:cursor-not-allowed" onclick="defineProjectDirectory();">Load</button>
             </span>
         </div>
@@ -46,7 +49,7 @@
                 <div class="flex justify-between py-2">
                     <!-- <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert" onclick="request_text('/', '');">Get /</button>
                     <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert"onclick="request_text('/test', '');">Get /test</button>
-                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert"onclick="request_path('/file', '');">Get /file</button>
+                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert"onclick="request_blob('/file', '');">Get /file</button>
                     <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert"onclick="request_data('/files_list', '');">Get /files_list</button> -->
                 </div>
 
@@ -56,9 +59,9 @@
                 </div>
                 
                 <div class="flex justify-between py-2">
-                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert" onclick="addRegion(2);">Add region</button>
+                    <button type="button" id="add-region" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert">Add region</button>
                     <span class="text-stone-500 p-1">Left-click to play. Right-click to pause.</span>
-                    <button type="button" class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert">Button 6</button>
+                    <button type="button" id="save-regions"class="border rounded solid border-stone-800 text-stone-800 p-1 hover:bg-stone-100 active:invert">Save notes</button>
                 </div>
             </section>
             <!-- <input type="file" onchange="sendPath(this);"> -->
